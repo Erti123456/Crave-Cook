@@ -32,6 +32,7 @@ export default function RootLayout({
           </nav>
           <Button />
         </header>
+        <NavLayout />
         <main>{children}</main>
         <footer></footer>
       </body>
