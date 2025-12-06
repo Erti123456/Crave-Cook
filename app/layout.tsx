@@ -15,16 +15,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <header className="w-screen flex flex-row bg-green-200 m-0 padding-0">
-          <Image
-            src="/logo.png"
-            alt="Crave & Cook Logo"
-            width={85}
-            height={85}
-            className="m-0"
-          />
-          <Nav />
-        </header>
+        <Nav />
         <main>{children}</main>
         <footer></footer>
       </body>
