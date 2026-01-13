@@ -10,7 +10,7 @@ export default function Header() {
   const [searchIconVisible, setSearchIconVisible] = useState(true);
 
   return (
-    <header className="font-sans w-full">
+    <header className="relative font-sans w-full z-50 border-b-2">
       <Nav>
         <Logo />
         <ListOfLinks
@@ -37,7 +37,7 @@ interface NavProps {
 
 const Nav = ({ children }: NavProps) => {
   return (
-    <nav className="flex justify-between items-center bg-green-200 p-4">
+    <nav className="flex justify-between items-center bg-green-300 p-4">
       {children}
     </nav>
   );
@@ -94,8 +94,8 @@ const SearchBar = ({ searchIconVisible, setSearchIconVisible }: Props) => {
         </button>
       ) : (
         <input
-          placeholder="Search your recipe..."
-          className="w-48 bg-white pl-3 pr-1 py-2 rounded-xl placeholder-black outline-none animate-in fade-in zoom-in duration-300"
+          placeholder={`Search for recipe     🔍`}
+          className="w-48 bg-white pl-3 pr-1 py-2 rounded-xl placeholder-gray-500 outline-none animate-in fade-in zoom-in duration-300"
           autoFocus
         />
       )}
@@ -128,7 +128,7 @@ function PopUpDiv({ isVisible, children }: PopUpDivProps) {
   return (
     isVisible && (
       <div
-        className={`w-70 h-80 bg-green-200 flex justify-center items-center ml-auto rounded-bl-2xl md:hidden`}
+        className={`absolute right-0 top-full w-70 h-80 bg-green-300 flex justify-center items-center ml-auto rounded-bl-2xl border-t-2  md:hidden`}
       >
         <ul className="flex flex-col space-y-8 items-center">
           {children}
