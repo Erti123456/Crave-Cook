@@ -45,27 +45,31 @@ interface CategoryRibbonProps {
 
 const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
   const [index, setIndex] = useState(0);
+
+  // LOGIC UPDATE: Calculate how many items to move.
+  // On desktop (lg), we show 4 items, so we can slide in chunks of 4.
+  // On tablet (md), we show 2. On mobile, we show 1.
   const goNext = () => {
-    setIndex((prev) => (prev === 2 ? prev + 0 : prev + 1));
+    setIndex((prev) => {
+      // This logic ensures we don't slide into empty space
+      // You can adjust '3' based on how many "pages" of items you have
+      return prev === 2 ? prev : prev + 1;
+    });
   };
+
   const goPrev = () => {
-    setIndex((prev) => (prev === 0 ? prev - 0 : prev - 1));
+    setIndex((prev) => (prev === 0 ? 0 : prev - 1));
   };
 
   return (
-    <div className="w-full flex justify-center items-center gap-3">
-      <button className="shrink-0 mr-5" onClick={goPrev}>
-        <Image
-          src={leftArrowImage}
-          alt="leftArrowImage"
-          width={50}
-          height={50}
-        />
+    <div className="w-full flex justify-center items-center gap-2 px-4">
+      <button className="shrink-0 mr-10" onClick={goPrev}>
+        <Image src={leftArrowImage} alt="Prev" width={60} height={60} />
       </button>
 
-      <div className={`w-[1440px] h-[350px] overflow-hidden`}>
+      <div className="w-full max-w-7xl h-[380px] overflow-hidden">
         <div
-          className="flex h-full items-center gap-9 transition-transform duration-500"
+          className="flex h-full items-center transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {categories.map((category) => (
@@ -77,13 +81,8 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
         </div>
       </div>
 
-      <button className="shrink-0 ml-5" onClick={goNext}>
-        <Image
-          src={rightArrowImage}
-          alt="rightArrowImage"
-          width={50}
-          height={50}
-        />
+      <button className="shrink-0 ml-10" onClick={goNext}>
+        <Image src={rightArrowImage} alt="Next" width={60} height={60} />
       </button>
     </div>
   );
@@ -92,22 +91,26 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
 interface MealTypeProps {
   mealCategory: Category;
 }
+
 const SpecificFourMealCategoryContainer = ({ mealCategory }: MealTypeProps) => {
   return (
-    <div className="relative w-[325px] h-[300px] flex flex-col items-center justify-center shrink-0 border-green-300 border-2 rounded-4xl ">
-      <div className="relative w-[250px] h-[250px]">
-        <Image
-          src={mealCategory.strCategoryThumb}
-          alt={mealCategory.strCategory}
-          fill
-          className="object-contain"
-        />
-      </div>
+    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center">
+      <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
+        <div className="relative w-[200px] h-[200px]">
+          <Image
+            src={mealCategory.strCategoryThumb}
+            alt={mealCategory.strCategory}
+            fill
+            className="object-contain"
+          />
+        </div>
 
-      <div className="mt-2 flex items-center justify-center">
-        <p className="font-bold text-lg">{mealCategory.strCategory}</p>
+        <div className="mt-2 flex items-center justify-center">
+          <p className="font-bold text-lg">{mealCategory.strCategory}</p>
+        </div>
       </div>
     </div>
   );
 };
+
 export default CategorySection;
