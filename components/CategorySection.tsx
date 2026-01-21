@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import leftArrowImage from "../public/Left-Arrow.png";
+import grayLeftArrow from "../public/Gray-Left-Arrow.png";
 import rightArrowImage from "../public/Right-Arrow.png";
+import useIsMobile from "@/components/useIsMobile";
 
 const CategorySection = ({}) => {
   const [mealCat, setMealCat] = useState([]);
@@ -26,7 +28,7 @@ const CategorySection = ({}) => {
 const MainTextCategorySection = () => {
   return (
     <div className="bg-green-300/80 backdrop-blur-sm py-6 px-10 border w-full flex justify-center items-center border-none">
-      <h2 className="text-md md:text-4xl font-extrabold text-white tracking-tight drop-shadow-lg">
+      <h2 className="text-3xl font-extrabold text-white tracking-tight drop-shadow-lg sm:text-4xl ">
         Select Your Style
       </h2>
     </div>
@@ -44,27 +46,45 @@ interface CategoryRibbonProps {
 }
 
 const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
+  const isMobile = useIsMobile(768);
+  const isTablet = useIsMobile(1024);
   const [index, setIndex] = useState(0);
+  const [isFirst, setIsFirst] = useState(true);
+  const [isLast, setIsLast] = useState(false);
 
-  // LOGIC UPDATE: Calculate how many items to move.
-  // On desktop (lg), we show 4 items, so we can slide in chunks of 4.
-  // On tablet (md), we show 2. On mobile, we show 1.
   const goNext = () => {
     setIndex((prev) => {
-      // This logic ensures we don't slide into empty space
-      // You can adjust '3' based on how many "pages" of items you have
-      return prev === 2 ? prev : prev + 1;
+      if (isMobile) {
+        return prev === categories.length - 1 ? prev : prev + 1;
+      } else if (isTablet) {
+        return prev === categories.length / 2 - 1 ? prev : prev + 1;
+      } else return prev === 2 ? prev : prev + 1;
     });
   };
 
   const goPrev = () => {
     setIndex((prev) => (prev === 0 ? 0 : prev - 1));
+    const isFirst = () => {
+      setIsFirst(index === 0 ? false : true);
+    };
+    isFirst();
   };
+  const handleIsLast = () => {};
 
   return (
     <div className="w-full flex justify-center items-center gap-2 px-4">
-      <button className="shrink-0 mr-10" onClick={goPrev}>
-        <Image src={leftArrowImage} alt="Prev" width={60} height={60} />
+      <button
+        className="shrink-0 mr-10"
+        onClick={() => {
+          goPrev();
+        }}
+      >
+        <Image
+          src={isFirst ? grayLeftArrow : leftArrowImage}
+          alt="Prev"
+          width={60}
+          height={60}
+        />
       </button>
 
       <div className="w-full max-w-7xl h-[380px] overflow-hidden">
@@ -81,7 +101,14 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
         </div>
       </div>
 
-      <button className="shrink-0 ml-10" onClick={goNext}>
+      <button
+        className="shrink-0 ml-10"
+        onClick={() => {
+          goNext();
+          handleIsLast();
+          setIsFirst(false);
+        }}
+      >
         <Image src={rightArrowImage} alt="Next" width={60} height={60} />
       </button>
     </div>
@@ -96,7 +123,7 @@ const SpecificFourMealCategoryContainer = ({ mealCategory }: MealTypeProps) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center">
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
-        <div className="relative w-[200px] h-[200px]">
+        <div className="relative w-35  sm:w-[190px] h-[200px]">
           <Image
             src={mealCategory.strCategoryThumb}
             alt={mealCategory.strCategory}
