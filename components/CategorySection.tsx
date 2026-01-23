@@ -1,15 +1,33 @@
 import Image from "next/image";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { useEffect, useState } from "react";
-import leftArrowImage from "../public/Left-Arrow.png";
-import grayLeftArrow from "../public/Gray-Left-Arrow.png";
-import grayRightArrow from "../public/Gray-Right-Arrow.png";
-import rightArrowImage from "../public/Right-Arrow.png";
 import useIsMobile from "@/components/useIsMobile";
 
-const CategorySection = ({}) => {
+interface ErrorProps {
+  children?: ReactNode;
+}
+interface Category {
+  idCategory: string;
+  strCategory: string;
+  strCategoryThumb: string;
+  strCategoryDescription: string;
+}
+interface FoodCategoriesContainerProps {
+  categories: Category[];
+  isLoading: boolean;
+}
+interface MealTypeContainerProps {
+  mealCategory: Category;
+}
+interface DotsProps {
+  totalDots: number;
+  setIndex: Dispatch<SetStateAction<number>>;
+  index: number;
+}
+
+const CategorySection = () => {
   const [mealCat, setMealCat] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   useEffect(() => {
     async function fetchMealCategories() {
@@ -40,8 +58,23 @@ const CategorySection = ({}) => {
   return (
     <section className="flex flex-col justify-center items-center w-full">
       <MainTextCategorySection />
-      <FoodCategoriesContainer categories={mealCat} />
+      {error ? (
+        <ErrorMessage>{error}</ErrorMessage>
+      ) : (
+        <FoodCategoriesContainer categories={mealCat} isLoading={isLoading} />
+      )}
     </section>
+  );
+};
+
+const ErrorMessage = ({ children }: ErrorProps) => {
+  return <p>{children}</p>;
+};
+const Loading = () => {
+  return (
+    <p className="flex justify-center items-center text-4xl h-full w-full">
+      The Content Is Loading...
+    </p>
   );
 };
 const MainTextCategorySection = () => {
@@ -53,18 +86,11 @@ const MainTextCategorySection = () => {
     </div>
   );
 };
-interface Category {
-  idCategory: string;
-  strCategory: string;
-  strCategoryThumb: string;
-  strCategoryDescription: string;
-}
 
-interface CategoryRibbonProps {
-  categories: Category[];
-}
-
-const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
+const FoodCategoriesContainer = ({
+  categories,
+  isLoading,
+}: FoodCategoriesContainerProps) => {
   const isMobile = useIsMobile(768);
   const isTablet = useIsMobile(1024);
   const [index, setIndex] = useState(0);
@@ -97,7 +123,7 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
           }}
         >
           <Image
-            src={isFirst ? grayLeftArrow : leftArrowImage}
+            src={isFirst ? "/Gray-Left-Arrow.png" : "/Left-Arrow.png"}
             alt="Prev"
             width={60}
             height={60}
@@ -109,12 +135,18 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
             className="flex h-full items-center transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
-            {categories.map((category) => (
-              <SpecificFourMealCategoryContainer
-                key={category.idCategory}
-                mealCategory={category}
-              />
-            ))}
+            {isLoading ? (
+              <Loading />
+            ) : categories.length === 0 && !isLoading ? (
+              <p>No meal categories found at the moment.</p>
+            ) : (
+              categories.map((category) => (
+                <MealTypeContainer
+                  key={category.idCategory}
+                  mealCategory={category}
+                />
+              ))
+            )}
           </div>
         </div>
 
@@ -125,7 +157,7 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
           }}
         >
           <Image
-            src={isLast ? grayRightArrow : rightArrowImage}
+            src={isLast ? "/Gray-Right-Arrow.png" : "/Right-Arrow.png"}
             alt="Next"
             width={60}
             height={60}
@@ -137,11 +169,7 @@ const FoodCategoriesContainer = ({ categories }: CategoryRibbonProps) => {
   );
 };
 
-interface MealTypeProps {
-  mealCategory: Category;
-}
-
-const SpecificFourMealCategoryContainer = ({ mealCategory }: MealTypeProps) => {
+const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300">
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
@@ -161,12 +189,7 @@ const SpecificFourMealCategoryContainer = ({ mealCategory }: MealTypeProps) => {
     </div>
   );
 };
-interface DotsInterface {
-  totalDots: number;
-  setIndex: Dispatch<SetStateAction<number>>;
-  index: number;
-}
-const Dots = ({ totalDots, setIndex, index }: DotsInterface) => {
+const Dots = ({ totalDots, setIndex, index }: DotsProps) => {
   return (
     <div className="flex gap-1">
       {Array.from({ length: totalDots }).map((_, i) => (
