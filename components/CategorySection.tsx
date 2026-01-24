@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import { useEffect, useState } from "react";
+import React, { ReactNode } from "react";
+import { useEffect, useState, useRef } from "react";
 import useIsMobile from "@/components/useIsMobile";
 
 interface ErrorProps {
@@ -16,13 +16,21 @@ interface FoodCategoriesContainerProps {
   categories: Category[];
   isLoading: boolean;
 }
+interface ButtonLeftProps {
+  isFirst: boolean;
+  goPrev: () => void;
+}
+interface ButtorRightProps {
+  isLast: boolean;
+  goNext: () => void;
+}
 interface MealTypeContainerProps {
   mealCategory: Category;
 }
 interface DotsProps {
   totalDots: number;
-  setIndex: Dispatch<SetStateAction<number>>;
   index: number;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const CategorySection = () => {
@@ -101,39 +109,43 @@ const FoodCategoriesContainer = ({
   const isFirst = index === 0;
   const isLast = index >= maxIndex;
   const goNext = () => {
-    setIndex((prev) => {
-      if (itemsPerPage === 1) {
-        return prev === categories.length - 1 ? prev : prev + 1;
-      } else if (itemsPerPage === 2) {
-        return prev === Math.ceil(categories.length / 2) - 1 ? prev : prev + 1;
-      } else return prev === 2 ? prev : prev + 1;
-    });
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: scrollRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+    }
   };
 
   const goPrev = () => {
-    setIndex((prev) => (prev === 0 ? 0 : prev - 1));
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: -scrollRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+    }
   };
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, offsetWidth } = scrollRef.current;
+
+      const newIndex = Math.round(scrollLeft / offsetWidth);
+
+      setIndex(newIndex);
+    }
+  };
+
   return (
     <>
-      <div className="w-full flex justify-center items-center gap-3 px-4">
-        <button
-          className="shrink-0 mr-10"
-          onClick={() => {
-            goPrev();
-          }}
-        >
-          <Image
-            src={isFirst ? "/Gray-Left-Arrow.png" : "/Left-Arrow.png"}
-            alt="Prev"
-            width={60}
-            height={60}
-          />
-        </button>
+      <div className="w-full flex justify-center items-center gap-2 md:gap-4 px-2 md:px-4">
+        <ButtonLeft goPrev={goPrev} isFirst={isFirst} />
 
-        <div className={`w-full max-w-7xl h-[380px] overflow-hidden `}>
+        <div className="flex-1 min-w-0 max-w-7xl h-[380px]">
           <div
-            className="flex h-full items-center transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${index * 100}%)` }}
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex h-full items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide"
           >
             {isLoading ? (
               <Loading />
@@ -149,29 +161,51 @@ const FoodCategoriesContainer = ({
             )}
           </div>
         </div>
-
-        <button
-          className="shrink-0 ml-10"
-          onClick={() => {
-            goNext();
-          }}
-        >
-          <Image
-            src={isLast ? "/Gray-Right-Arrow.png" : "/Right-Arrow.png"}
-            alt="Next"
-            width={60}
-            height={60}
-          />
-        </button>
+        <ButtonRight goNext={goNext} isLast={isLast} />
       </div>
-      <Dots totalDots={totalDots} setIndex={setIndex} index={index} />
+      <Dots scrollRef={scrollRef} totalDots={totalDots} index={index} />
     </>
+  );
+};
+
+const ButtonLeft = ({ goPrev, isFirst }: ButtonLeftProps) => {
+  return (
+    <button
+      className="shrink-0 mr-2 md:mr-10"
+      onClick={() => {
+        goPrev();
+      }}
+    >
+      <Image
+        src={isFirst ? "/Gray-Left-Arrow.png" : "/Left-Arrow.png"}
+        alt="Prev"
+        width={60}
+        height={60}
+      />
+    </button>
+  );
+};
+const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
+  return (
+    <button
+      className="shrink-0 ml-2 md:ml-10"
+      onClick={() => {
+        goNext();
+      }}
+    >
+      <Image
+        src={isLast ? "/Gray-Right-Arrow.png" : "/Right-Arrow.png"}
+        alt="Next"
+        width={60}
+        height={60}
+      />
+    </button>
   );
 };
 
 const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300">
+    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-end">
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
         <div className="relative w-35  sm:w-[190px] h-[200px]">
           <Image
@@ -189,7 +223,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
     </div>
   );
 };
-const Dots = ({ totalDots, setIndex, index }: DotsProps) => {
+const Dots = ({ totalDots, index, scrollRef }: DotsProps) => {
   return (
     <div className="flex gap-1">
       {Array.from({ length: totalDots }).map((_, i) => (
@@ -198,7 +232,14 @@ const Dots = ({ totalDots, setIndex, index }: DotsProps) => {
             index === i ? "bg-green-400 w-8" : "bg-gray-200 w-3"
           }`}
           key={i}
-          onClick={() => setIndex(i)}
+          onClick={() => {
+            if (scrollRef.current) {
+              scrollRef.current.scrollTo({
+                left: i * scrollRef.current.offsetWidth,
+                behavior: "smooth",
+              });
+            }
+          }}
         ></button>
       ))}
     </div>
