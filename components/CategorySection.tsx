@@ -105,8 +105,8 @@ const FoodCategoriesContainer = ({
   categories,
   isLoading,
 }: FoodCategoriesContainerProps) => {
-  const isMobile = useIsMobile(768);
-  const isTablet = useIsMobile(1024);
+  const isMobile = useIsMobile();
+  const isTablet = useIsMobile(1024); //tablet dimestions;
   const [index, setIndex] = useState(0);
   const itemsPerPage = isMobile ? 1 : isTablet ? 2 : 4;
   const totalDots = Math.ceil(categories.length / itemsPerPage);
@@ -200,6 +200,7 @@ const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
       onClick={() => {
         goNext();
       }}
+      draggable="false"
     >
       <Image
         src={isLast ? "/Gray-Right-Arrow.png" : "/Right-Arrow.png"}
@@ -213,7 +214,10 @@ const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
 
 const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-end">
+    <div
+      className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-start "
+      draggable="false"
+    >
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
         <div className="relative w-35  sm:w-[190px] h-[200px]">
           <Image
