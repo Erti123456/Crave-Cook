@@ -80,9 +80,15 @@ const ErrorMessage = ({ children }: ErrorProps) => {
 };
 const Loading = () => {
   return (
-    <p className="flex justify-center items-center text-4xl h-full w-full">
-      The Content Is Loading...
-    </p>
+    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center animate-pulse">
+      <div className="relative w-full h-[300px] flex flex-col items-center justify-center rounded-4xl ">
+        <div className="relative w-35 sm:w-[190px] h-[180px] bg-gray-300 rounded-2xl"></div>
+
+        <div className="mt-4 flex items-center justify-center w-full px-10">
+          <div className="h-6 w-full bg-gray-300 rounded-md"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 const MainTextCategorySection = () => {
@@ -148,7 +154,9 @@ const FoodCategoriesContainer = ({
             className="flex h-full items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide"
           >
             {isLoading ? (
-              <Loading />
+              Array.from({ length: itemsPerPage }).map((_, i) => (
+                <Loading key={i} />
+              ))
             ) : categories.length === 0 && !isLoading ? (
               <p>No meal categories found at the moment.</p>
             ) : (
@@ -223,6 +231,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
     </div>
   );
 };
+
 const Dots = ({ totalDots, index, scrollRef }: DotsProps) => {
   return (
     <div className="flex gap-1">
