@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import "../app/globals.css";
+import "../../app/globals.css";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 

@@ -1,6 +1,6 @@
-import smallerBackground from "../public/smaller-high-quality-food.png";
-import backgroundImage from "../public/high-quality-food.jpg";
-import useIsMobile from "@/components/useIsMobile";
+import smallerBackground from "../../../public/smaller-high-quality-food.png";
+import backgroundImage from "../../../public/high-quality-food.jpg";
+import useIsMobile from "@/globalHooks/useIsMobile";
 import { ReactNode } from "react";
 import Image from "next/image";
 const HeroSection = () => {

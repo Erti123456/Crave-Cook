@@ -1,16 +1,11 @@
 import Image from "next/image";
 import React, { ReactNode } from "react";
 import { useEffect, useState, useRef } from "react";
-import useIsMobile from "@/components/useIsMobile";
+import useIsMobile from "@/globalHooks/useIsMobile";
+import { Category } from "@/types/recipe";
 
 interface ErrorProps {
   children?: ReactNode;
-}
-interface Category {
-  idCategory: string;
-  strCategory: string;
-  strCategoryThumb: string;
-  strCategoryDescription: string;
 }
 interface FoodCategoriesContainerProps {
   categories: Category[];
