@@ -1,4 +1,5 @@
 import Header from "@/features/layout/Header";
+import Providers from "./providers";
 import "./globals.css";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
@@ -14,9 +15,11 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Header />
-        <main>{children}</main>
-        <footer></footer>
+        <Providers>
+          <Header />
+          <main>{children}</main>
+          <footer></footer>
+        </Providers>
       </body>
     </html>
   );
