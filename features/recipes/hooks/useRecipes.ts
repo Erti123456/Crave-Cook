@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/lib/axios";
 import { RecipeAPIResponse } from "@/types/recipe";
 
-export const useRecipes = (searchQuery: string = "") => {
+const useRecipes = (searchQuery: string = "") => {
   return useQuery({
     queryKey: ["recipes", searchQuery],
     queryFn: async () => {
@@ -14,3 +14,5 @@ export const useRecipes = (searchQuery: string = "") => {
     enabled: true,
   });
 };
+
+export default useRecipes;
