@@ -6,23 +6,42 @@ import Image from "next/image";
 interface MealCardProps {
   recipe: Recipe;
 }
-
 const Page = () => {
+  return (
+    <div className="w-full h-full">
+      <SearchBar />
+      <MealsSearched />
+    </div>
+  );
+};
+const SearchBar = () => {
+  return (
+    <div className="flex justify-center items-center mt-5">
+      <form className="flex  items-center border-2 rounded-2xl pr-2">
+        <input
+          className=" bg-gray-300 px-4 py-2 outline-none placeholder:text-gray-400  h-10 text-green-900"
+          placeholder="Search recipes...                              🔍"
+        />
+        <select className="  bg-gray-300 border-l-2 mr-2  px-3 py-4 outline-none">
+          <option value="">Category</option>
+        </select>
+        <select className="px-3 mr-1 py-4 border-l-2 outline-none bg-white">
+          <option value="">Sort By</option>
+        </select>
+      </form>
+    </div>
+  );
+};
+const MealsSearched = () => {
   const { data, isError, isLoading, error } = useRecipes();
   const recipes = data || [];
+
   return (
-    <>
-      <form>
-        <input className="border" />
-        <select></select>
-        <select></select>
-      </form>
-      <div className="flex flex-wrap w-full h-full flex-row gap-10 justify-center items-center mt-9">
-        {recipes?.map((recipe) => (
-          <MealCard recipe={recipe} key={recipe.idMeal} />
-        ))}
-      </div>
-    </>
+    <div className="flex flex-wrap w-full h-full flex-row gap-10 justify-center items-center mt-9">
+      {recipes?.map((recipe) => (
+        <MealCard recipe={recipe} key={recipe.idMeal} />
+      ))}
+    </div>
   );
 };
 
