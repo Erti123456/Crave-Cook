@@ -1,66 +1,47 @@
 # Project Context & Roadmap
-**Last Updated:** January 27, 2026
+**Last Updated:** January 28, 2026
+**User Identity:** Jarvis (Assistant)
 
 ## 🛑 User Constraints & Rules (CRITICAL)
-*   **DO NOT CODE unless explicitly asked:** The user wants to learn. Do not implement features or change code autonomously. Act as a consultant first.
-*   **No Code Suggestions (unless requested):** When asking "what is missing," focus on architecture and strategy, not specific lines of code.
-*   **Environment:**
-    *   OS: Linux (Arch-based / Omarchy).
-    *   Editor: LazyVim.
-    *   Goal: Learning to get a tech job.
-*   **Tooling:** Use the project to learn specific tech (React Query, Styled Components, etc.).
-*   **User Identity:** Assistant is now identified as **Jarvis**.
+*   **DO NOT CODE unless explicitly asked:** The user wants to learn. Do not implement features or change code autonomously.
+*   **NO CODE SUGGESTIONS (UNLESS REQUESTED):** Do not provide code snippets or solutions by default. **Always ask first:** "Would you like me to suggest the code for this?"
+*   **Consultant First:** Focus on architecture, strategy, and explaining "Why" before "How".
+*   **Environment:** Linux (Arch-based / Omarchy), LazyVim.
+*   **Success Criteria:** No hydration errors, optimized images, strict TypeScript, SSR for discovery.
 
-## 📜 Conversation Log & Key Decisions
+## 🎯 Project Scope: Crave & Cook
+**High-performance recipe discovery platform (Next.js, TS, Tailwind, Clerk).**
 
-### 1. Initial Request & Constraints
-*   **User asked:** "Can you see my project... suggest what is missing... make it so features I add require learning these technologies?"
-*   **User Instruction:** "You don't code only when I tell you to code."
+### 1. Key Deliverables
+*   **Home Page (SSR):** Fetch data on server, no `useEffect`, cache categories.
+*   **Recipe Details (`/recipe/[id]`):** Dynamic routing, `generateMetadata`, optimized `<Image>`.
+*   **Auth & Favorites:** Clerk integration. Favorites stored in metadata/local state.
+*   **UX:** `loading.tsx` skeletons.
 
-### 2. Architectural Advice
-*   **Structure:** Adopted "Feature-Based Architecture" (`features/home`, `features/recipes`) to organize by domain.
-*   **Tech Strategy:**
-    *   **Data:** GraphQL (Complex Entities) + Axios (REST). React Query is mandatory.
-    *   **Styling:** Tailwind (Layouts) + Styled Components (Complex UI).
-
-### 3. Execution (Authorized by User)
-*   **Folders:** Created `features/home/components`, `features/layout`, `globalHooks`, `lib`, `types`.
-*   **Data Layer:** Created `types/recipe.ts`, `lib/axios.ts`, and `features/recipes/hooks/useRecipes.ts`.
-
-### 4. React Query Setup (Jan 27)
-*   **Action Taken:** 
-    *   Created `app/providers.tsx` to initialize the `QueryClient`.
-    *   Updated `app/layout.tsx` to wrap the application in `Providers`.
-*   **Explanation:** Jarvis explained the roles of `QueryClient` (The Archivist) and `QueryClientProvider` (The Infrastructure).
-
----
+## 📜 Conversation Log & Key Decisions (Jan 28)
+*   **Architecture Decision:** The Home page (`/`) will be SSR-focused. The Recipes page (`/recipes`) will be a Client-side interactive search tool.
+*   **Data Fetching:** Confirmed `useRecipes` hook fetches ~25 items by default. Discussed Category-based filtering vs. Letter-based iteration.
+*   **Layout:** Implemented `flex-wrap` for the meal gallery to ensure responsiveness.
+*   **Correction:** Fixed `<forum>` vs `<form>` typo and clarified component naming conventions (Uppercase).
 
 ## 📂 Project Structure (Current)
 ```text
 /crave-cook
-├── app/                 # Next.js App Router
-│   ├── providers.tsx    # React Query Engine
-│   └── layout.tsx       # Updated with Providers
-├── features/            # Business Logic & Domains
-│   ├── home/            # Landing Page
-│   ├── recipes/         # Recipe Logic
-│   └── layout/          # Global UI
-├── globalHooks/         # Global Hooks (useIsMobile)
-├── lib/                 # External client configs (Axios)
-├── types/               # Global TypeScript interfaces
-└── public/              # Static Assets
+├── app/
+│   ├── recipes/
+│   │   └── page.tsx      # Client-side Search (In Progress)
+│   ├── layout.tsx
+│   └── page.tsx         # To be refactored to SSR
+├── features/
+│   ├── recipes/
+│   │   └── hooks/
+│   │       └── useRecipes.ts
+│   └── ...
+└── types/
+    └── recipe.ts
 ```
 
-## 🚀 The Master Plan (Roadmap)
-
-### Phase 1: The Core "Vertical Slice" (Current Focus)
-Goal: Fetch and display a list of recipes.
-1.  **Define Types:** DONE.
-2.  **Data Layer:** DONE.
-3.  **Engine Setup:** DONE (Providers).
-4.  **UI Component:** Create `RecipeList.tsx` to consume the `useRecipes` hook. (NEXT STEP)
-
-## 📝 Next Actions for Developer
-1.  Implement `features/home/components/RecipeList.tsx`.
-2.  Handle `isLoading` and `isError` states.
-3.  Map through the `recipes` array to display `strMeal`.
+## 🚀 Next Actions for Developer
+1.  **Search Logic:** Implement `useState` for the search input in `app/recipes/page.tsx`.
+2.  **Filter UI:** Add the "More Options" toggle to show Categories/Letters.
+3.  **Refactor Home:** Start the SSR implementation for the main landing page.

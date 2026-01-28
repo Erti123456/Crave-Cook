@@ -12,7 +12,11 @@ const Page = () => {
   const recipes = data || [];
   return (
     <>
-      <div></div>
+      <form>
+        <input className="border" />
+        <select></select>
+        <select></select>
+      </form>
       <div className="flex flex-wrap w-full h-full flex-row gap-10 justify-center items-center mt-9">
         {recipes?.map((recipe) => (
           <MealCard recipe={recipe} key={recipe.idMeal} />
