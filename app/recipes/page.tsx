@@ -2,28 +2,40 @@
 import useRecipes from "@/features/recipes/hooks/useRecipes";
 import { Recipe } from "@/types/recipe";
 import Image from "next/image";
+import { useState } from "react";
 
 interface MealCardProps {
   recipe: Recipe;
 }
+interface SearchBarProps {
+  setInput: (val: string) => void;
+  input: string;
+}
+interface MealsSearchedProps {
+  input: string;
+}
+
 const Page = () => {
+  const [input, setInput] = useState("");
   return (
     <div className="w-full h-full">
-      <SearchBar />
-      <MealsSearched />
+      <SearchBar input={input} setInput={setInput} />
+      <MealsSearched input={input} />
     </div>
   );
 };
-const SearchBar = () => {
+const SearchBar = ({ setInput, input }: SearchBarProps) => {
   return (
     <div className="flex justify-center items-center mt-5">
       <form className="flex  items-center border-2 rounded-2xl pr-2">
         <input
           className=" bg-gray-300 px-4 py-2 outline-none placeholder:text-gray-400  h-10 text-green-900"
           placeholder="Search recipes...                              🔍"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
         />
         <select className="  bg-gray-300 border-l-2 mr-2  px-3 py-4 outline-none">
-          <option value="">Category</option>
+          {}
         </select>
         <select className="px-3 mr-1 py-4 border-l-2 outline-none bg-white">
           <option value="">Sort By</option>
@@ -32,8 +44,8 @@ const SearchBar = () => {
     </div>
   );
 };
-const MealsSearched = () => {
-  const { data, isError, isLoading, error } = useRecipes();
+const MealsSearched = ({ input }: MealsSearchedProps) => {
+  const { data, isError, isLoading, error } = useRecipes(input);
   const recipes = data || [];
 
   return (
