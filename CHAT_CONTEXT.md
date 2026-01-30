@@ -1,5 +1,5 @@
 # Project Context & Roadmap
-**Last Updated:** January 28, 2026
+**Last Updated:** January 30, 2026
 **User Identity:** Jarvis (Assistant)
 
 ## 🛑 User Constraints & Rules (CRITICAL)
@@ -18,11 +18,16 @@
 *   **Auth & Favorites:** Clerk integration. Favorites stored in metadata/local state.
 *   **UX:** `loading.tsx` skeletons.
 
-## 📜 Conversation Log & Key Decisions (Jan 28)
+## 📜 Conversation Log & Key Decisions
+### Jan 28
 *   **Architecture Decision:** The Home page (`/`) will be SSR-focused. The Recipes page (`/recipes`) will be a Client-side interactive search tool.
 *   **Data Fetching:** Confirmed `useRecipes` hook fetches ~25 items by default. Discussed Category-based filtering vs. Letter-based iteration.
 *   **Layout:** Implemented `flex-wrap` for the meal gallery to ensure responsiveness.
 *   **Correction:** Fixed `<forum>` vs `<form>` typo and clarified component naming conventions (Uppercase).
+
+### Jan 30
+*   **Refactor:** Successfully refactored `CategorySection.tsx` to use the custom `useCategories` hook (TanStack Query).
+*   **Cleanup:** Removed manual `useEffect` and `fetch` logic, delegating state management (loading, error, data) to the hook.
 
 ## 📂 Project Structure (Current)
 ```text
@@ -31,11 +36,15 @@
 │   ├── recipes/
 │   │   └── page.tsx      # Client-side Search (In Progress)
 │   ├── layout.tsx
-│   └── page.tsx         # To be refactored to SSR
+│   └── page.tsx         # Client Component (Current), target for SSR refactor
 ├── features/
+│   ├── home/
+│   │   └── components/
+│   │       └── CategorySection.tsx # Refactored to use useCategories
 │   ├── recipes/
 │   │   └── hooks/
-│   │       └── useRecipes.ts
+│   │       ├── useRecipes.ts
+│   │       └── useCategories.ts
 │   └── ...
 └── types/
     └── recipe.ts
@@ -43,5 +52,5 @@
 
 ## 🚀 Next Actions for Developer
 1.  **Search Logic:** Implement `useState` for the search input in `app/recipes/page.tsx`.
-2.  **Filter UI:** Add the "More Options" toggle to show Categories/Letters.
-3.  **Refactor Home:** Start the SSR implementation for the main landing page.
+2.  **Filter UI:** Add the "More Options" toggle to show Categories/Letters in the Recipes page.
+3.  **Refactor Home to SSR:** Transition `app/page.tsx` from a client component to a server component to improve SEO and performance.

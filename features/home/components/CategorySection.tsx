@@ -1,8 +1,9 @@
 import Image from "next/image";
 import React, { ReactNode } from "react";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import useIsMobile from "@/globalHooks/useIsMobile";
 import { Category } from "@/types/recipe";
+import useCategories from "@/features/recipes/hooks/useCategories";
 
 interface ErrorProps {
   children?: ReactNode;
@@ -29,40 +30,14 @@ interface DotsProps {
 }
 
 const CategorySection = () => {
-  const [mealCat, setMealCat] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    async function fetchMealCategories() {
-      setIsLoading(true);
-      setError("");
-      try {
-        const res = await fetch(
-          "https://www.themealdb.com/api/json/v1/1/categories.php",
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch meals!");
-        }
-        const data = await res.json();
-        setMealCat(data.categories.slice(0, 12));
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Unknown error has occured!");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchMealCategories();
-  }, []);
+  const { data, isLoading, isError, error } = useCategories();
+  const mealCat = data ? data.slice(0, 12) : [];
 
   return (
     <section className="flex flex-col justify-center items-center w-full">
       <MainTextCategorySection />
-      {error ? (
-        <ErrorMessage>{error}</ErrorMessage>
+      {isError ? (
+        <ErrorMessage>{error?.message}</ErrorMessage>
       ) : (
         <FoodCategoriesContainer categories={mealCat} isLoading={isLoading} />
       )}
