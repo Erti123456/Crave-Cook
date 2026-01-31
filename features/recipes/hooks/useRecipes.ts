@@ -2,7 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/lib/axios";
 import { RecipeAPIResponse } from "@/types/recipe";
 
-const useRecipes = (searchQuery: string = "") => {
+const useRecipes = (
+  searchQuery: string = "",
+  isCategory: boolean = false,
+  Category: string = "",
+) => {
   return useQuery({
     queryKey: ["recipes", searchQuery],
     queryFn: async () => {

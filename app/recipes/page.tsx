@@ -1,9 +1,10 @@
 "use client";
+import useCategories from "@/features/recipes/hooks/useCategories";
 import useRecipes from "@/features/recipes/hooks/useRecipes";
 import { Recipe } from "@/types/recipe";
 import Image from "next/image";
 import { useState } from "react";
-
+import { Category } from "@/types/recipe";
 interface MealCardProps {
   recipe: Recipe;
 }
@@ -25,6 +26,11 @@ const Page = () => {
   );
 };
 const SearchBar = ({ setInput, input }: SearchBarProps) => {
+  const { data } = useCategories();
+  const categories = data ? data : [];
+  const handleCategoryOptionChange = (categorySelected: string) => {
+    console.log(categorySelected);
+  };
   return (
     <div className="flex justify-center items-center mt-5">
       <form className="flex  items-center border-2 rounded-2xl pr-2">
@@ -34,8 +40,18 @@ const SearchBar = ({ setInput, input }: SearchBarProps) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <select className="  bg-gray-300 border-l-2 mr-2  px-3 py-4 outline-none">
-          {}
+        <select
+          onChange={(e) => handleCategoryOptionChange(e.target.value)}
+          className="  bg-gray-300 border-l-2 mr-2  px-3 py-4 outline-none"
+        >
+          <option hidden>Category</option>
+          {categories.map((category) => {
+            return (
+              <option value={category.strCategory} key={category.idCategory}>
+                {category.strCategory}
+              </option>
+            );
+          })}
         </select>
         <select className="px-3 mr-1 py-4 border-l-2 outline-none bg-white">
           <option value="">Sort By</option>

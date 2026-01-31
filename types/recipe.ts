@@ -20,5 +20,5 @@ export interface RecipeAPIResponse {
   meals: Recipe[] | null;
 }
 export interface CategoryApiResponse {
-  categories: Category | null;
+  categories: Category[] | null;
 }

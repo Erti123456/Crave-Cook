@@ -31,7 +31,7 @@ interface DotsProps {
 
 const CategorySection = () => {
   const { data, isLoading, isError, error } = useCategories();
-  const mealCat = data ? data.slice(0, 12) : [];
+  const mealCat = data ? data : [];
 
   return (
     <section className="flex flex-col justify-center items-center w-full">

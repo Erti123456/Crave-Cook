@@ -51,6 +51,11 @@
 ```
 
 ## 🚀 Next Actions for Developer
-1.  **Search Logic:** Implement `useState` for the search input in `app/recipes/page.tsx`.
-2.  **Filter UI:** Add the "More Options" toggle to show Categories/Letters in the Recipes page.
-3.  **Refactor Home to SSR:** Transition `app/page.tsx` from a client component to a server component to improve SEO and performance.
+1.  **Filter UI & Sorting:**
+    *   Populate the empty `<select>` in `app/recipes/page.tsx` with Categories (using `useCategories`).
+    *   Implement "Sort By" functionality (if applicable, or remove the placeholder).
+    *   Add the "More Options" toggle for advanced filtering (Category/Letter).
+2.  **Refactor Home to SSR:**
+    *   Convert `app/page.tsx` to a Server Component.
+    *   Refactor data fetching in `features/home` to support server-side pre-fetching or server components.
+3.  **Search Refinement:** Add debouncing to the search input in `app/recipes/page.tsx` to avoid excessive API calls.
