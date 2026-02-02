@@ -132,7 +132,7 @@ const FoodCategoriesContainer = ({
             ) : (
               categories.map((category) => (
                 <MealTypeContainer
-                  key={category.idCategory}
+                  key={category.name}
                   mealCategory={category}
                 />
               ))
@@ -183,6 +183,9 @@ const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
 };
 
 const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
+  // Placeholder image if no image is provided
+  const categoryImage = mealCategory.image || "/high-quality-food.jpg";
+
   return (
     <div
       className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-start "
@@ -191,15 +194,15 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
         <div className="relative w-35  sm:w-[190px] h-[200px]">
           <Image
-            src={mealCategory.strCategoryThumb}
-            alt={mealCategory.strCategory}
+            src={categoryImage}
+            alt={mealCategory.name}
             fill
-            className="object-contain"
+            className="object-cover rounded-2xl"
           />
         </div>
 
         <div className="mt-2 flex items-center justify-center">
-          <p className="font-bold text-lg">{mealCategory.strCategory}</p>
+          <p className="font-bold text-lg">{mealCategory.name}</p>
         </div>
       </div>
     </div>
