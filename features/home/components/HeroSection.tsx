@@ -1,8 +1,10 @@
+"use client";
 import smallerBackground from "../../../public/smaller-high-quality-food.png";
 import backgroundImage from "../../../public/high-quality-food.jpg";
 import useIsMobile from "@/globalHooks/useIsMobile";
 import { ReactNode } from "react";
 import Image from "next/image";
+import MainSearchInput from "./MainSearchInput";
 const HeroSection = () => {
   const isMobile = useIsMobile(768);
   return (
@@ -10,7 +12,7 @@ const HeroSection = () => {
       <BackgroundImage isMobile={isMobile} />
       <MainDisplay>
         <MainTextTitle />
-        <MainSearchInput isMobile={isMobile} />
+        <MainSearchInput />
       </MainDisplay>
     </section>
   );
@@ -52,19 +54,6 @@ const MainTextTitle = () => {
         What are we cooking today?
       </h1>
     </div>
-  );
-};
-const MainSearchInput = ({ isMobile }: isMobileInterface) => {
-  return (
-    <input
-      type="text"
-      className="bg-white outline-none mt-10 p-5 rounded-2xl w-62 md:w-[420px]"
-      placeholder={
-        isMobile
-          ? "Search for recipes!         🔍"
-          : "Search for your favorite recipes here!                 🔍"
-      }
-    />
   );
 };
 export default HeroSection;

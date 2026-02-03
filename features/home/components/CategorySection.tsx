@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 import { useState, useRef } from "react";
@@ -115,8 +116,7 @@ const FoodCategoriesContainer = ({
   return (
     <>
       <div className="w-full flex justify-center items-center gap-2 md:gap-4 px-2 md:px-4">
-        <ButtonLeft goPrev={goPrev} isFirst={isFirst} />
-
+        {isMobile ? null : <ButtonLeft goPrev={goPrev} isFirst={isFirst} />}
         <div className="flex-1 min-w-0 max-w-7xl h-[380px]">
           <div
             ref={scrollRef}
@@ -139,7 +139,7 @@ const FoodCategoriesContainer = ({
             )}
           </div>
         </div>
-        <ButtonRight goNext={goNext} isLast={isLast} />
+        {isMobile ? null : <ButtonRight goNext={goNext} isLast={isLast} />}
       </div>
       <Dots scrollRef={scrollRef} totalDots={totalDots} index={index} />
     </>
@@ -192,7 +192,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
       draggable="false"
     >
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
-        <div className="relative w-35  sm:w-[190px] h-[200px]">
+        <div className={`relative w-48  sm:w-[190px] h-[200px]`}>
           <Image
             src={categoryImage}
             alt={mealCategory.name}
@@ -233,3 +233,4 @@ const Dots = ({ totalDots, index, scrollRef }: DotsProps) => {
 };
 
 export default CategorySection;
+

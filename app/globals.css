@@ -12,3 +12,11 @@
     display: none;
   }
 }
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+}

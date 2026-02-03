@@ -25,13 +25,23 @@ const Page = () => {
 
   return (
     <div className="w-full h-full">
-      <SearchBar input={input} setInput={setInput} cuisine={cuisine} setCuisine={setCuisine} />
+      <SearchBar
+        input={input}
+        setInput={setInput}
+        cuisine={cuisine}
+        setCuisine={setCuisine}
+      />
       <MealsSearched input={input} cuisine={cuisine} />
     </div>
   );
 };
 
-const SearchBar = ({ setInput, input, setCuisine, cuisine }: SearchBarProps) => {
+const SearchBar = ({
+  setInput,
+  input,
+  setCuisine,
+  cuisine,
+}: SearchBarProps) => {
   const { data } = useCategories();
   const categories = data ? data : [];
 
@@ -45,7 +55,7 @@ const SearchBar = ({ setInput, input, setCuisine, cuisine }: SearchBarProps) => 
           onChange={(e) => setInput(e.target.value)}
         />
         <div className="flex items-center bg-gray-300 border-l-2 border-gray-400">
-           <span className="pl-3 text-gray-500 text-sm">🔍</span>
+          <span className="pl-3 text-gray-500 text-sm">🔍</span>
           <select
             value={cuisine}
             onChange={(e) => setCuisine(e.target.value)}
@@ -74,28 +84,38 @@ const MealsSearched = ({ input, cuisine }: MealsSearchedProps) => {
   const { data, isError, isLoading } = useRecipes(input, cuisine);
   const recipes = data || [];
 
-  if (isLoading) return (
-    <div className="flex flex-wrap w-full gap-10 justify-center items-center mt-9">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="lg:w-1/6 h-64 bg-gray-200 animate-pulse rounded-3xl" />
-      ))}
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="flex flex-wrap w-full gap-10 justify-center items-center mt-9">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="lg:w-1/6 h-64 bg-gray-200 animate-pulse rounded-3xl"
+          />
+        ))}
+      </div>
+    );
 
-  if (isError) return <div className="text-center mt-10 text-red-500">Error fetching recipes</div>;
+  if (isError)
+    return (
+      <div className="text-center mt-10 text-red-500">
+        Error fetching recipes
+      </div>
+    );
 
   return (
     <div className="flex flex-wrap w-full h-full flex-row gap-10 justify-center items-center mt-9 px-4">
       {recipes.length > 0 ? (
-        recipes.map((recipe) => (
-          <MealCard recipe={recipe} key={recipe.id} />
-        ))
+        recipes.map((recipe) => <MealCard recipe={recipe} key={recipe.id} />)
       ) : (
-        <p className="text-gray-500 mt-10">No recipes found matching your criteria.</p>
+        <p className="text-gray-500 mt-10">
+          No recipes found matching your criteria.
+        </p>
       )}
     </div>
   );
 };
+
 
 const MealCard = ({ recipe }: MealCardProps) => {
   return (
@@ -108,11 +128,13 @@ const MealCard = ({ recipe }: MealCardProps) => {
           fill
         />
       </div>
-      <p className="text-center font-bold text-gray-800 line-clamp-2 min-h-[3rem] text-sm">
+      <p className="text-center font-bold text-gray-800 line-clamp-2 min-h-12 text-sm">
         {recipe.title}
       </p>
       {recipe.readyInMinutes && (
-        <span className="text-xs text-gray-400">{recipe.readyInMinutes} mins</span>
+        <span className="text-xs text-gray-400">
+          {recipe.readyInMinutes} mins
+        </span>
       )}
     </div>
   );

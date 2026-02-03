@@ -129,14 +129,19 @@ interface PopUpDivProps {
 function PopUpDiv({ isVisible, children }: PopUpDivProps) {
   return (
     <div
-      className={`absolute right-0 top-full w-70 h-80 bg-green-300 flex justify-center items-center ml-auto rounded-bl-2xl border-t-2 transition-transform ease-in-out duration-300 ${isVisible ? "translate-x-0" : "translate-x-full"}  md:hidden`}
+      className={`absolute right-0 top-full w-64 h-80 bg-green-300 flex justify-center items-center ml-auto rounded-bl-2xl
+      border-t-2 transition-all ease-in-out duration-300 md:hidden ${
+        isVisible
+          ? "translate-x-0 opacity-100"
+          : "translate-x-full opacity-0 pointer-events-none"
+      }`}
     >
       <ul className="flex flex-col space-y-8 items-center">
         {children}
-        <Link href="">Sign In</Link>
-        <Link href="">Home</Link>
-        <Link href="">Recipes</Link>
-        <Link href="">Favorites</Link>
+        <Link href="/signin">Sign In</Link>
+        <Link href="/">Home</Link>
+        <Link href="/recipes">Recipes</Link>
+        <Link href="/favorites">Favorites</Link>
       </ul>
     </div>
   );
