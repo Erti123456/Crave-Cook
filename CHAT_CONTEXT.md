@@ -1,5 +1,5 @@
 # Project Context & Roadmap
-**Last Updated:** February 3, 2026
+**Last Updated:** February 4, 2026
 **User Identity:** Jarvis (Assistant)
 
 ## 🛑 User Constraints & Rules (CRITICAL)
@@ -20,28 +20,28 @@
 *   **Dev Efficiency:** Using mock data (`lib/mockData.ts`) to preserve Spoonacular API points.
 
 ## 📜 Conversation Log & Key Decisions
-### Feb 3 (Current)
-*   **Visual Assets:** Updated Thai, Spanish, and French cuisine images in `lib/mockData.ts` with high-quality, watermark-free images from Unsplash and Pexels.
-*   **Image Optimization:** Expanded `next.config.ts` to support remote patterns for Unsplash, Pexels, Pixabay, and Placeholder.co.
-*   **Layout Stability:** Fixed a horizontal scrolling bug by applying `overflow-x: hidden` to `html` and `body` in `app/globals.css`.
-*   **Mobile Experience:** Improved the mobile navigation sidebar in `Header.tsx` with smoother transitions (`opacity`, `pointer-events`) and fixed a width issue that was breaking the layout.
-*   **Navigation Cleanup:** Fixed broken/empty `href` links in the mobile menu component.
-*   **Search Refinement:** Planned the connection between `HeroSection` search and the `/recipes` page.
+### Feb 4 (Current)
+*   **Search Connectivity:** Successfully linked `MainSearchInput.tsx` on the Home page to the Recipes page using URL query parameters (`?q=...`).
+*   **App Router Migration:** Updated navigation logic in `MainSearchInput.tsx` and `app/recipes/page.tsx` to use `next/navigation` (`useRouter`, `useSearchParams`) instead of the deprecated `next/router`.
+*   **Bug Fix:** Fixed an issue in `MainSearchInput.tsx` where `e.preventDefault()` on `onKeyDown` was preventing all text entry.
+*   **Stability:** Added `<Suspense>` to `app/recipes/page.tsx` to properly handle the use of `useSearchParams` in a Client Component during build/SSR.
+*   **Source of Truth Strategy:** Decided to move toward "URL-controlled search" (removing local state as the primary search value) to improve link sharing and browser history.
 
-### Feb 2 - Feb 3
-*   **Major Architecture Shift:** Switched to Spoonacular API. Updated `lib/axios.ts` with a request interceptor for API keys.
-*   **Mocking Strategy:** Implemented `USE_MOCK` in `useRecipes.ts` to use local data from `lib/mockData.ts` during UI development.
-*   **Data Models:** Refactored `types/recipe.ts` to match Spoonacular's `ComplexSearch` response.
+### Feb 3
+*   **Visual Assets:** Updated cuisine images in `lib/mockData.ts` with high-quality, watermark-free images.
+*   **Image Optimization:** Expanded `next.config.ts` for remote image patterns.
+*   **Layout Stability:** Fixed horizontal scrolling bugs in `globals.css`.
+*   **Mobile Experience:** Improved navigation sidebar transitions in `Header.tsx`.
 
 ## 📂 Project Structure (Current)
 ```text
 /crave-cook
 ├── app/
 │   ├── recipes/
-│   │   └── page.tsx      # Search UI (Supports Cuisine filtering)
+│   │   └── page.tsx      # Search UI (Uses Suspense + useSearchParams)
 │   ├── layout.tsx
-│   ├── page.tsx         # Home (Target for SSR refactor)
-│   └── providers.tsx    # TanStack Query & Theme providers
+│   ├── page.tsx         # Home
+│   └── providers.tsx
 ├── features/
 │   ├── home/            # Home-specific components
 │   ├── layout/          # Header, Footer
@@ -57,16 +57,14 @@
 ```
 
 ## 🚀 Next Actions for Developer
-1.  **Search Connectivity:**
-    *   Connect the `HeroSection` search input to the `/recipes` page using query parameters (`?search=query`).
-    *   Initialize the `app/recipes/page.tsx` search state from URL search parameters.
-2.  **Recipe Detail Page:**
-    *   Create `app/recipes/[id]/page.tsx`.
-    *   Link `MealCard` to the dynamic detail page.
-3.  **Search Refinement:**
-    *   Implement "Sort By" logic (Popularity, Price, Healthiness) in `app/recipes/page.tsx`.
-    *   Add "Diet" filtering to the search params.
-4.  **Home Page SSR:**
+1.  **URL-Controlled Search (Priority):**
+    *   Rework `SearchBar` in `app/recipes/page.tsx` to use `lodash.debounce` to update the URL directly as the user types.
+    *   Sync the input value with `useSearchParams()` so the URL is the "Source of Truth".
+2.  **Code Organization:**
+    *   Move `MealCard` and `SearchBar` from `app/recipes/page.tsx` to dedicated files in `features/recipes/components/`.
+3.  **Image Optimization:**
+    *   Add the `sizes` attribute to the `Image` component in `MealCard` to optimize browser downloading.
+4.  **Recipe Detail Page:**
+    *   Create `app/recipes/[id]/page.tsx` and link cards to it.
+5.  **Home Page SSR:**
     *   Refactor `app/page.tsx` from Client to Server Component.
-5.  **New Pages:**
-    *   Implement `/favorites` and `/signin` placeholder pages.
