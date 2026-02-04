@@ -26,7 +26,7 @@ const useRecipes = (
             cuisine: cuisine,
             diet: diet,
             addRecipeInformation: true, // Gets summary, diets, etc.
-            number: 10,
+            number: 40,
           },
         },
       );
@@ -36,3 +36,4 @@ const useRecipes = (
 };
 
 export default useRecipes;
+

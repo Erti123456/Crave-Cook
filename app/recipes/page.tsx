@@ -3,7 +3,8 @@ import useCategories from "@/features/recipes/hooks/useCategories";
 import useRecipes from "@/features/recipes/hooks/useRecipes";
 import { Recipe } from "@/types/recipe";
 import Image from "next/image";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 
 interface MealCardProps {
   recipe: Recipe;
@@ -20,8 +21,27 @@ interface MealsSearchedProps {
 }
 
 const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecipeContent />
+    </Suspense>
+  );
+};
+
+const RecipeContent = () => {
   const [input, setInput] = useState("");
   const [cuisine, setCuisine] = useState("");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const callBackFunc = () => {
+      const query = searchParams.get("q");
+      if (query) {
+        setInput(query);
+      }
+    };
+    callBackFunc();
+  }, [searchParams]);
 
   return (
     <div className="w-full h-full">
@@ -115,7 +135,6 @@ const MealsSearched = ({ input, cuisine }: MealsSearchedProps) => {
     </div>
   );
 };
-
 
 const MealCard = ({ recipe }: MealCardProps) => {
   return (

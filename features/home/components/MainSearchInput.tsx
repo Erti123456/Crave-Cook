@@ -1,13 +1,15 @@
 "use client";
 import useIsMobile from "@/globalHooks/useIsMobile";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const MainSearchInput = () => {
   const [input, setInput] = useState("");
   const isMobile = useIsMobile(768);
-
-  const handlePressEnter = (eventKey: string) => {
-    if (eventKey === "Enter") {
+  const router = useRouter();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      router.push(`/recipes?q=${input}`);
     }
   };
 
@@ -22,10 +24,7 @@ const MainSearchInput = () => {
       }
       onChange={(e) => setInput(e.target.value)}
       value={input}
-      onKeyDown={(e) => {
-        handlePressEnter(e.key);
-        e.preventDefault();
-      }}
+      onKeyDown={handleKeyDown}
     />
   );
 };
