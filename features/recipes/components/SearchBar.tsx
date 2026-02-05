@@ -1,5 +1,6 @@
 import useCategories from "@/features/recipes/hooks/useCategories";
 import { Category } from "@/types/recipe";
+import { useRouter } from "next/router";
 
 interface SearchBarProps {
   setInput: (val: string) => void;
@@ -38,14 +39,20 @@ const SearchInput = ({
 }: {
   input: string;
   setInput: (val: string) => void;
-}) => (
-  <input
-    className="bg-gray-300 px-4 py-2 outline-none placeholder:text-gray-400 h-10 text-green-900 w-64"
-    placeholder="Search recipes..."
-    value={input}
-    onChange={(e) => setInput(e.target.value)}
-  />
-);
+}) => {
+  const router = useRouter();
+  return (
+    <input
+      className="bg-gray-300 px-4 py-2 outline-none placeholder:text-gray-400 h-10 text-green-900 w-64"
+      placeholder="Search recipes..."
+      value={input}
+      onChange={(e) => {
+        setInput(e.target.value);
+        router.push(`/recipes?q=${input}`);
+      }}
+    />
+  );
+};
 
 const CuisineFilter = ({
   cuisine,
@@ -83,4 +90,3 @@ const SortFilter = () => (
 );
 
 export default SearchBar;
-

@@ -1,13 +1,13 @@
 import useRecipes from "@/features/recipes/hooks/useRecipes";
 import MealCard from "./MealCard";
+import { useSearchParams } from "next/navigation";
 
-interface MealsSearchedProps {
-  input: string;
-  cuisine: string;
-}
+const MealsSearched = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") ?? "";
+  const cuisine = searchParams.get("cuisine") ?? "";
 
-const MealsSearched = ({ input, cuisine }: MealsSearchedProps) => {
-  const { data, isError, isLoading } = useRecipes(input, cuisine);
+  const { data, isError, isLoading } = useRecipes(query, cuisine);
   const recipes = data || [];
 
   if (isLoading)

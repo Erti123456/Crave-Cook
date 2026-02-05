@@ -27,7 +27,7 @@ const RecipeContent = () => {
         cuisine={cuisine}
         setCuisine={setCuisine}
       />
-      <MealsSearched input={input} cuisine={cuisine} />
+      <MealsSearched />
     </div>
   );
 };
