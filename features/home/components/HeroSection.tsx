@@ -8,7 +8,7 @@ import MainSearchInput from "./MainSearchInput";
 const HeroSection = () => {
   const isMobile = useIsMobile(768);
   return (
-    <section className="relative w-full h-[600px] overflow-hidden">
+    <section className="relative w-full h-[750px] overflow-hidden">
       <BackgroundImage isMobile={isMobile} />
       <MainDisplay>
         <MainTextTitle />
@@ -49,7 +49,7 @@ const MainDisplay = ({ children }: MainDisplayInterface) => {
 };
 const MainTextTitle = () => {
   return (
-    <div className="bg-green-300/80 backdrop-blur-sm py-6 px-10 rounded-xl border border-white/20">
+    <div className="bg-green-400/80 backdrop-blur-sm py-6 px-10 rounded-xl border border-white/20">
       <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-lg">
         What are we cooking today?
       </h1>

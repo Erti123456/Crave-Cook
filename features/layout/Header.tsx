@@ -1,43 +1,67 @@
 "use client";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import "../../app/globals.css";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { usePathname } from "next/navigation"; // Import usePathname
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(false);
-  const [searchIconVisible, setSearchIconVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    if (isHomePage) {
+      window.addEventListener("scroll", handleScroll);
+      handleScroll();
+    } else {
+      setIsScrolled(true);
+    }
+
+    return () => {
+      if (isHomePage) {
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [isHomePage]);
 
   return (
-    <header className="relative font-sans w-full z-50 border-b-2">
-      <Nav>
+    <header className="fixed top-0 left-0 w-full z-50">
+      <Nav isHomePage={isHomePage} isScrolled={isScrolled}>
         <Logo />
-        <ListOfLinks
-          searchIconVisible={searchIconVisible}
-          setSearchIconVisible={setSearchIconVisible}
-        />
+        <ListOfLinks />
         <HamburgerIcon isVisible={isVisible} setIsVisible={setIsVisible} />
       </Nav>
-
       {/* Mobile Menu */}
-      <PopUpDiv isVisible={isVisible}>
-        <SearchBar
-          searchIconVisible={searchIconVisible}
-          setSearchIconVisible={setSearchIconVisible}
-        />
-      </PopUpDiv>
+      <PopUpDiv isVisible={isVisible} setIsVisible={setIsVisible} />
     </header>
   );
 }
 
 interface NavProps {
   children: ReactNode;
+  isHomePage: boolean;
+  isScrolled: boolean;
 }
 
-const Nav = ({ children }: NavProps) => {
+const Nav = ({ children, isHomePage, isScrolled }: NavProps) => {
   return (
-    <nav className="flex justify-between items-center bg-green-300 p-4">
+    <nav
+      className={`flex justify-between items-center p-4 transition-all duration-300 ${
+        isHomePage && !isScrolled ? "bg-transparent" : "bg-green-400 shadow-md"
+      }`}
+    >
       {children}
     </nav>
   );
@@ -58,50 +82,20 @@ const Logo = () => {
     </Link>
   );
 };
-interface PropsListOfLinks {
-  searchIconVisible: boolean;
-  setSearchIconVisible: (val: boolean) => void;
-}
 
-const ListOfLinks = ({
-  searchIconVisible,
-  setSearchIconVisible,
-}: PropsListOfLinks) => {
+const ListOfLinks = () => {
   return (
     <ul
-      className={`hidden md:flex space-x-10 ${searchIconVisible ? "mr-8" : "mr-2"} font-medium h-full items-center`}
+      className={`hidden md:flex space-x-10 font-medium h-full items-center mr-8`}
     >
       <Link href="/signin">Sign In</Link>
       <Link href="/">Home</Link>
-      <Link href="/recipes">Recipes</Link>
+      <Link href="/recipes">Browse</Link>
       <Link href="/favorites">Favorites</Link>
-      <SearchBar
-        searchIconVisible={searchIconVisible}
-        setSearchIconVisible={setSearchIconVisible}
-      />
+      <Link href="/recipes" className="mt-1  text-xl">
+        <FaMagnifyingGlass />
+      </Link>
     </ul>
-  );
-};
-
-interface Props {
-  searchIconVisible: boolean;
-  setSearchIconVisible: (val: boolean) => void;
-}
-const SearchBar = ({ searchIconVisible, setSearchIconVisible }: Props) => {
-  return (
-    <>
-      {searchIconVisible ? (
-        <button className="mt-1" onClick={() => setSearchIconVisible(false)}>
-          <FaMagnifyingGlass />
-        </button>
-      ) : (
-        <input
-          placeholder={`Search for recipe     🔍`}
-          className="w-48 bg-white pl-3 pr-1 py-2 rounded-xl placeholder-gray-500 outline-none animate-in fade-in zoom-in duration-300"
-          autoFocus
-        />
-      )}
-    </>
   );
 };
 
@@ -122,14 +116,14 @@ const HamburgerIcon = ({ isVisible, setIsVisible }: PropsHamburgerIcon) => {
 };
 
 interface PopUpDivProps {
-  children: ReactNode;
   isVisible: boolean;
+  setIsVisible: (val: boolean) => void;
 }
 
-function PopUpDiv({ isVisible, children }: PopUpDivProps) {
+function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
   return (
     <div
-      className={`absolute right-0 top-full w-64 h-80 bg-green-300 flex justify-center items-center ml-auto rounded-bl-2xl
+      className={`absolute right-0 top-full w-64 h-80 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl
       border-t-2 transition-all ease-in-out duration-300 md:hidden ${
         isVisible
           ? "translate-x-0 opacity-100"
@@ -137,12 +131,27 @@ function PopUpDiv({ isVisible, children }: PopUpDivProps) {
       }`}
     >
       <ul className="flex flex-col space-y-8 items-center">
-        {children}
-        <Link href="/signin">Sign In</Link>
-        <Link href="/">Home</Link>
-        <Link href="/recipes">Recipes</Link>
-        <Link href="/favorites">Favorites</Link>
+        <Link href="/signin" onClick={() => setIsVisible(false)}>
+          Sign In
+        </Link>
+        <Link href="/" onClick={() => setIsVisible(false)}>
+          Home
+        </Link>
+        <Link href="/recipes" onClick={() => setIsVisible(false)}>
+          Browse
+        </Link>
+        <Link href="/favorites" onClick={() => setIsVisible(false)}>
+          Favorites
+        </Link>
+        <Link
+          href="/recipes"
+          onClick={() => setIsVisible(false)}
+          className="flex items-center gap-2 text-white text-lg"
+        >
+          <FaMagnifyingGlass /> Search
+        </Link>
       </ul>
     </div>
   );
 }
+

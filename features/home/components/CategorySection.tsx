@@ -64,7 +64,7 @@ const Loading = () => {
 };
 const MainTextCategorySection = () => {
   return (
-    <div className="bg-green-300/80 backdrop-blur-sm py-6 px-10 border w-full flex justify-center items-center border-none">
+    <div className="bg-green-400/80 backdrop-blur-sm py-6 px-10 border w-full flex justify-center items-center border-none">
       <h2 className="text-3xl font-extrabold text-white tracking-tight drop-shadow-lg sm:text-4xl ">
         Select Your Style
       </h2>
@@ -191,7 +191,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
       className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-start "
       draggable="false"
     >
-      <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-300 border-2 rounded-4xl bg-white">
+      <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-400 border-2 rounded-4xl bg-white">
         <div className={`relative w-48  sm:w-[190px] h-[200px]`}>
           <Image
             src={categoryImage}

@@ -10,6 +10,12 @@ export interface Recipe {
   readyInMinutes?: number;
   servings?: number;
   sourceUrl?: string;
+  // Added for mock sorting capabilities
+  popularity?: number; // e.g., 0-100
+  healthiness?: number; // e.g., 0-100
+  price?: number; // e.g., cost per serving
+  calories?: number;
+  protein?: number;
 }
 
 export interface RecipeAPIResponse {

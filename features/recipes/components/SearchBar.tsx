@@ -164,4 +164,3 @@ const SortFilter = ({
 );
 
 export default SearchBar;
-
