@@ -20,19 +20,12 @@
 *   **Dev Efficiency:** Using mock data (`lib/mockData.ts`) to preserve Spoonacular API points.
 
 ## 📜 Conversation Log & Key Decisions
-### Feb 5 (Latest Progress)
-*   **URL-Controlled Search (Step 2 Investigation):**
-    *   Identified that `useSearchParams().get()` returns `string | null`, which causes type and logic issues when passed directly to `useRecipes`.
-    *   Determined that the `useRecipes` hook needs valid strings to prevent literal "null" searches in the API.
-    *   Decided to use the nullish coalescing operator (`??`) to provide `""` fallbacks for URL parameters.
-    *   Confirmed `lodash` is available in `package.json` for future implementation of debounced URL updates.
-    *   Identified a conflict in `RecipeContent.tsx` where local state is passed as props to `MealsSearched.tsx`, while the latter is trying to read directly from the URL.
-
-### Feb 4
-*   **Component Refactoring (Step 1 Complete):** 
-    *   Deconstructed `app/recipes/page.tsx` into modular components.
-    *   Created optimized `MealCard.tsx` and refactored `SearchBar.tsx`.
-    *   Isolated data fetching logic into `MealsSearched.tsx`.
+### Feb 9 (Latest Progress)
+*   **URL-Controlled Search (Step 2 Completed):**
+    *   Implemented debounced search in `SearchBar.tsx` using `useMemo` and `lodash.debounce`.
+    *   Added `useEffect` cleanup to prevent memory leaks and ghost navigations.
+    *   Optimized `CuisineFilter` to push immediately while cancelling any pending search debounce for consistency.
+    *   Added detailed code comments explaining the architectural decisions (Stability, Optimization, Memory Safety).
 
 ## 📂 Project Structure (Current)
 ```text
@@ -48,9 +41,9 @@
 │   ├── recipes/
 │   │   ├── components/
 │   │   │   ├── MealCard.tsx
-│   │   │   ├── MealsSearched.tsx # Currently investigating URL parameter syncing
+│   │   │   ├── MealsSearched.tsx 
 │   │   │   ├── RecipeContent.tsx
-│   │   │   └── SearchBar.tsx
+│   │   │   └── SearchBar.tsx     # Debounced URL updates implemented
 │   │   └── hooks/
 │   │       ├── useRecipes.ts     # Handles Spoonacular/Mock logic
 │   │       └── useCategories.ts
@@ -60,12 +53,7 @@
 ```
 
 ## 🚀 Next Actions for Developer
-1.  **Sync `MealsSearched.tsx` (Priority):**
-    *   Update parameter assignments using `?? ""` to handle `null` results from `useSearchParams`.
-2.  **Refactor `RecipeContent.tsx` State:**
-    *   Remove redundant local `useState` for `input` and `cuisine`.
-    *   Ensure the component uses URL parameters as the single source of truth.
-3.  **Implement Debounced Search:**
-    *   Update `SearchBar.tsx` to push updates to the URL with a debounce.
-4.  **Recipe Detail Page (Step 3):**
+1.  **Recipe Detail Page (Step 3):**
     *   Create `app/recipes/[id]/page.tsx`.
+    *   Implement SSR fetching for recipe details.
+    *   Create `RecipeDetail` component in `features/recipes/components/`.

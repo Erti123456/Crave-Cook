@@ -1,3 +1,4 @@
+"use client";
 import useRecipes from "@/features/recipes/hooks/useRecipes";
 import MealCard from "./MealCard";
 import { useSearchParams } from "next/navigation";
@@ -6,8 +7,9 @@ const MealsSearched = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") ?? "";
   const cuisine = searchParams.get("cuisine") ?? "";
+  const sort = searchParams.get("sort") ?? "";
 
-  const { data, isError, isLoading } = useRecipes(query, cuisine);
+  const { data, isError, isLoading } = useRecipes(query, cuisine, sort);
   const recipes = data || [];
 
   if (isLoading)
@@ -43,3 +45,4 @@ const MealsSearched = () => {
 };
 
 export default MealsSearched;
+

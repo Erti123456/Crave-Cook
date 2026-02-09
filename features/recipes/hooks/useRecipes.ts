@@ -8,10 +8,12 @@ const USE_MOCK = true; // Toggle this to false when you want to use real data
 const useRecipes = (
   searchQuery: string = "",
   cuisine: string = "",
-  diet: string = "",
+  sort: string = "",
 ) => {
+  const sortDirection = sort === "time" || sort === "price" ? "asc" : "desc";
+
   return useQuery({
-    queryKey: ["recipes", searchQuery, cuisine, diet],
+    queryKey: ["recipes", searchQuery, cuisine, sort, sortDirection],
     queryFn: async () => {
       if (USE_MOCK) {
         console.log("Using Mock Data");
@@ -24,7 +26,8 @@ const useRecipes = (
           params: {
             query: searchQuery,
             cuisine: cuisine,
-            diet: diet,
+            sort: sort,
+            sortDirection: sortDirection,
             addRecipeInformation: true, // Gets summary, diets, etc.
             number: 40,
           },
@@ -36,3 +39,4 @@ const useRecipes = (
 };
 
 export default useRecipes;
+
