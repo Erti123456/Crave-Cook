@@ -22,7 +22,6 @@ const SearchBar = () => {
     [router],
   );
 
-  // Cleanup: prevent ghost navigations on unmount
   useEffect(() => {
     return () => {
       debouncedUpdateUrl.cancel();

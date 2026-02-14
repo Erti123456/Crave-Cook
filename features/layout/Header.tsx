@@ -5,6 +5,7 @@ import "../../app/globals.css";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { usePathname } from "next/navigation"; // Import usePathname
+import useIsMobile from "@/globalHooks/useIsMobile";
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,13 +22,15 @@ export default function Header() {
         setIsScrolled(false);
       }
     };
-
-    if (isHomePage) {
-      window.addEventListener("scroll", handleScroll);
-      handleScroll();
-    } else {
-      setIsScrolled(true);
-    }
+    const isHomePageFunc = () => {
+      if (isHomePage) {
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+      } else {
+        setIsScrolled(true);
+      }
+    };
+    isHomePageFunc();
 
     return () => {
       if (isHomePage) {
@@ -56,11 +59,14 @@ interface NavProps {
 }
 
 const Nav = ({ children, isHomePage, isScrolled }: NavProps) => {
+  const isMobile = useIsMobile(768);
   return (
     <nav
       className={`flex justify-between items-center p-4 transition-all duration-300 ${
-        isHomePage && !isScrolled ? "bg-transparent" : "bg-green-400 shadow-md"
-      }`}
+        isHomePage && !isScrolled && !isMobile
+          ? "bg-transparent"
+          : "bg-green-400 shadow-md"
+      } `}
     >
       {children}
     </nav>
@@ -72,6 +78,7 @@ const Logo = () => {
     <Link href="/">
       <button className="cursor-pointer shrink-0">
         <Image
+          className="brightness-0 invert"
           src="/logo.png"
           alt="Crave & Cook Logo"
           width={85}
@@ -123,12 +130,12 @@ interface PopUpDivProps {
 function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
   return (
     <div
-      className={`absolute right-0 top-full w-64 h-80 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl
-      border-t-2 transition-all ease-in-out duration-300 md:hidden ${
-        isVisible
-          ? "translate-x-0 opacity-100"
-          : "translate-x-full opacity-0 pointer-events-none"
-      }`}
+      className={`absolute right-0 w-64 h-80 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl
+       transition-all ease-in-out duration-300 md:hidden ${
+         isVisible
+           ? "translate-x-0 opacity-100"
+           : "translate-x-full opacity-0 pointer-events-none"
+       }`}
     >
       <ul className="flex flex-col space-y-8 items-center">
         <Link href="/signin" onClick={() => setIsVisible(false)}>
@@ -154,4 +161,3 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
     </div>
   );
 }
-

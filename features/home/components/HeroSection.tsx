@@ -32,6 +32,7 @@ const BackgroundImage = ({ isMobile }: isMobileInterface) => {
       priority
       style={{
         objectFit: "cover",
+        objectPosition: "center top",
         zIndex: 0,
       }}
     />

@@ -4,7 +4,7 @@ import MealsSearched from "./MealsSearched";
 
 const RecipeContent = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pt-28">
       <SearchBar />
       <MealsSearched />
     </div>
