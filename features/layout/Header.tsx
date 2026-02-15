@@ -99,7 +99,7 @@ const ListOfLinks = () => {
       <Link href="/">Home</Link>
       <Link href="/recipes">Browse</Link>
       <Link href="/favorites">Favorites</Link>
-      <Link href="/recipes" className="mt-1  text-xl">
+      <Link href="/recipes?focus=true" className="mt-1  text-xl">
         <FaMagnifyingGlass />
       </Link>
     </ul>
@@ -151,7 +151,7 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
           Favorites
         </Link>
         <Link
-          href="/recipes"
+          href="/recipes?focus=true"
           onClick={() => setIsVisible(false)}
           className="flex items-center gap-2 text-white text-lg"
         >

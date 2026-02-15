@@ -1,7 +1,7 @@
 import useCategories from "@/features/recipes/hooks/useCategories";
 import { Category } from "@/types/recipe";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { debounce } from "lodash";
 
 const SearchBar = () => {
@@ -101,8 +101,16 @@ const SearchInput = ({
   input: string;
   onSearch: (val: string) => void;
 }) => {
+  const searchRef = useRef<HTMLInputElement>(null);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("focus") === "true") {
+      searchRef.current?.focus();
+    }
+  }, [searchParams]);
   return (
     <input
+      ref={searchRef}
       className="bg-gray-300 px-4 py-2 outline-none placeholder:text-gray-400 h-10 text-green-900 w-64"
       placeholder="Search recipes..."
       value={input}
