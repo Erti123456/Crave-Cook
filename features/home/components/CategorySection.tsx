@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import useIsMobile from "@/globalHooks/useIsMobile";
 import { Category } from "@/types/recipe";
 import useCategories from "@/features/recipes/hooks/useCategories";
+import { useRouter } from "next/navigation";
 
 interface ErrorProps {
   children?: ReactNode;
@@ -185,11 +186,15 @@ const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
 const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
   // Placeholder image if no image is provided
   const categoryImage = mealCategory.image || "/high-quality-food.jpg";
+  const router = useRouter();
 
   return (
-    <div
+    <button
       className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center cursor-pointer hover:scale-105 ease-in-out duration-300 snap-start "
       draggable="false"
+      onClick={() => {
+        router.push(`recipes?cuisine=${mealCategory.name}`);
+      }}
     >
       <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-400 border-2 rounded-4xl bg-white">
         <div className={`relative w-48  sm:w-[190px] h-[200px]`}>
@@ -205,7 +210,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
           <p className="font-bold text-lg">{mealCategory.name}</p>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -233,4 +238,3 @@ const Dots = ({ totalDots, index, scrollRef }: DotsProps) => {
 };
 
 export default CategorySection;
-

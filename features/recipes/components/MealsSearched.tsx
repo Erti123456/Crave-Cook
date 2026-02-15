@@ -15,7 +15,7 @@ const MealsSearched = () => {
   if (isLoading)
     return (
       <div className="flex flex-wrap w-full gap-10 justify-center items-center mt-9">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(18)].map((_, i) => (
           <div
             key={i}
             className="lg:w-1/6 h-64 bg-gray-200 animate-pulse rounded-3xl"
@@ -45,4 +45,3 @@ const MealsSearched = () => {
 };
 
 export default MealsSearched;
-
