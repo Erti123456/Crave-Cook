@@ -20,6 +20,80 @@ export const MOCK_RECIPES = {
       price: 1.5,
       calories: 450,
       protein: 15,
+      extendedIngredients: [
+        {
+          id: 1001,
+          name: "pasta",
+          amount: 1,
+          unit: "lb",
+          original: "1 lb pasta",
+        },
+        {
+          id: 11215,
+          name: "garlic",
+          amount: 3,
+          unit: "cloves",
+          original: "3 cloves garlic, minced",
+        },
+        {
+          id: 11291,
+          name: "scallions",
+          amount: 2,
+          unit: "",
+          original: "2 scallions, chopped",
+        },
+        {
+          id: 11135,
+          name: "cauliflower",
+          amount: 1,
+          unit: "head",
+          original: "1 head cauliflower, cut into florets",
+        },
+        {
+          id: 18079,
+          name: "breadcrumbs",
+          amount: 0.5,
+          unit: "cup",
+          original: "1/2 cup toasted breadcrumbs",
+        },
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            {
+              number: 1,
+              step: "Bring a large pot of salted water to a boil and cook pasta according to package directions.",
+            },
+            {
+              number: 2,
+              step: "In a large skillet, sauté garlic and cauliflower until tender.",
+            },
+            {
+              number: 3,
+              step: "Toss pasta with the cauliflower mixture, scallions, and top with breadcrumbs.",
+            },
+          ],
+        },
+      ],
+      nutrition: {
+        nutrients: [
+          {
+            name: "Calories",
+            amount: 450,
+            unit: "kcal",
+            percentOfDailyNeeds: 22,
+          },
+          { name: "Protein", amount: 15, unit: "g", percentOfDailyNeeds: 30 },
+          { name: "Fat", amount: 10, unit: "g", percentOfDailyNeeds: 15 },
+          {
+            name: "Carbohydrates",
+            amount: 75,
+            unit: "g",
+            percentOfDailyNeeds: 25,
+          },
+        ],
+      },
     },
     {
       id: 715538,
@@ -420,4 +494,3 @@ export const POPULAR_CUISINES = [
       "https://www.shutterstock.com/image-photo/slovak-national-dish-bryndzove-halusky-600nw-1921788164.jpg",
   },
 ];
-

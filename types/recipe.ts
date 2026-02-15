@@ -1,3 +1,28 @@
+export interface Ingredient {
+  id: number;
+  name: string;
+  amount: number;
+  unit: string;
+  original: string;
+}
+
+export interface InstructionStep {
+  number: number;
+  step: string;
+}
+
+export interface Instruction {
+  name: string;
+  steps: InstructionStep[];
+}
+
+export interface Nutrient {
+  name: string;
+  amount: number;
+  unit: string;
+  percentOfDailyNeeds?: number;
+}
+
 export interface Recipe {
   id: number;
   title: string;
@@ -16,6 +41,11 @@ export interface Recipe {
   price?: number; // e.g., cost per serving
   calories?: number;
   protein?: number;
+  extendedIngredients?: Ingredient[];
+  analyzedInstructions?: Instruction[];
+  nutrition?: {
+    nutrients: Nutrient[];
+  };
 }
 
 export interface RecipeAPIResponse {
