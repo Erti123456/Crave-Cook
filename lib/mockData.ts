@@ -6,7 +6,7 @@ export const MOCK_RECIPES = {
     {
       id: 716429,
       title: "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-      image: "https://img.spoonacular.com/recipes/716429-312x231.jpg",
+      image: "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format\u0026fit=crop\u0026w=1200\u0026q=80",
       imageType: "jpg",
       summary:
         "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs might be just the main course you are searching for.",

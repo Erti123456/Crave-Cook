@@ -11,7 +11,7 @@ const MealCard = ({ recipe }: MealCardProps) => {
     <>
       <Link
         href={`/recipes/${recipe.id}`}
-        className="group w-2/3 h-2/3 md:w-1/4 lg:w-1/6  border-green-400 rounded-3xl border-2 flex items-center justify-center hover:scale-110 flex-col gap-4 p-4 hover:shadow-xl transition-all cursor-pointer bg-white "
+        className="w-2/3 sm:w-1/3 h-2/3 md:w-1/4 lg:w-1/6  border-green-400 rounded-3xl border-2 flex items-center justify-center hover:scale-110 flex-col gap-4 p-4 hover:shadow-xl transition-all cursor-pointer bg-white "
       >
         <div className="relative w-full aspect-square overflow-hidden rounded-xl">
           <Image
