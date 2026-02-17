@@ -1,8 +1,11 @@
+"use client";
 import useCategories from "@/features/recipes/hooks/useCategories";
 import { Category } from "@/types/recipe";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { debounce } from "lodash";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiChevronDown } from "react-icons/fi";
 
 const SearchBar = () => {
   const { data } = useCategories();
@@ -167,36 +170,47 @@ const CuisineFilter = ({
     <div className="relative flex-1 md:flex-none" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between bg-green-400 text-white rounded-xl pl-4 pr-10 h-11 shadow-sm hover:bg-green-500 transition-colors cursor-pointer outline-none text-sm font-semibold appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22white%22%20stroke-width%3D%222.5%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22m19.5%208.25-7.5%207.5-7.5-7.5%22%20%2F%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[position:right_12px_center] bg-no-repeat text-center focus:ring-0 focus:outline-none"
+        className="w-full flex items-center justify-between bg-green-400 text-white rounded-xl px-4 h-11 shadow-sm hover:bg-green-500 transition-colors cursor-pointer outline-none text-sm font-semibold focus:ring-0 focus:outline-none"
       >
-        <span className="w-full text-center">{cuisine || "All Cuisines"}</span>
+        <span className="flex-1 text-center">{cuisine || "All Cuisines"}</span>
+        <FiChevronDown
+          className={`ml-2 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in zoom-in duration-200">
-          <div
-            onClick={() => {
-              onCuisineChange("");
-              setIsOpen(false);
-            }}
-            className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2"
           >
-            All Cuisines
-          </div>
-          {categories.map((category) => (
             <div
-              key={category.name}
               onClick={() => {
-                onCuisineChange(category.name);
+                onCuisineChange("");
                 setIsOpen(false);
               }}
               className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
             >
-              {category.name}
+              All Cuisines
             </div>
-          ))}
-        </div>
-      )}
+            {categories.map((category) => (
+              <div
+                key={category.name}
+                onClick={() => {
+                  onCuisineChange(category.name);
+                  setIsOpen(false);
+                }}
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
+              >
+                {category.name}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -241,36 +255,47 @@ const SortFilter = ({
     <div className="relative flex-1 md:flex-none" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between bg-green-400 text-white rounded-xl pl-4 pr-10 h-11 shadow-sm hover:bg-green-500 transition-colors cursor-pointer outline-none text-sm font-semibold appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22white%22%20stroke-width%3D%222.5%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22m19.5%208.25-7.5%207.5-7.5-7.5%22%20%2F%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[position:right_12px_center] bg-no-repeat text-center focus:ring-0 focus:outline-none"
+        className="w-full flex items-center justify-between bg-green-400 text-white rounded-xl px-4 h-11 shadow-sm hover:bg-green-500 transition-colors cursor-pointer outline-none text-sm font-semibold focus:ring-0 focus:outline-none"
       >
-        <span className="w-full text-center">{currentLabel}</span>
+        <span className="flex-1 text-center">{currentLabel}</span>
+        <FiChevronDown
+          className={`ml-2 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in zoom-in duration-200">
-          <div
-            onClick={() => {
-              onSortChange("");
-              setIsOpen(false);
-            }}
-            className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2"
           >
-            Sort By
-          </div>
-          {sortOptions.map((option) => (
             <div
-              key={option.value}
               onClick={() => {
-                onSortChange(option.value);
+                onSortChange("");
                 setIsOpen(false);
               }}
               className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
             >
-              {option.label}
+              Sort By
             </div>
-          ))}
-        </div>
-      )}
+            {sortOptions.map((option) => (
+              <div
+                key={option.value}
+                onClick={() => {
+                  onSortChange(option.value);
+                  setIsOpen(false);
+                }}
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
+              >
+                {option.label}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

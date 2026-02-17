@@ -110,6 +110,28 @@ export const MOCK_RECIPES = {
       price: 2.2,
       calories: 600,
       protein: 25,
+      extendedIngredients: [
+        { id: 1001, name: "pasta", amount: 8, unit: "oz", original: "8 oz pasta" },
+        { id: 10210011, name: "pork", amount: 1, unit: "lb", original: "1 lb pork loin, cubed" },
+        { id: 11529, name: "tomatoes", amount: 3, unit: "", original: "3 roma tomatoes, diced" },
+        { id: 2044, name: "basil", amount: 0.25, unit: "cup", original: "1/4 cup fresh basil" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Cook pasta in boiling water." },
+            { number: 2, step: "Sear pork in a pan until golden." },
+            { number: 3, step: "Toss with tomatoes and basil." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 600, unit: "kcal", percentOfDailyNeeds: 30 },
+          { name: "Protein", amount: 25, unit: "g", percentOfDailyNeeds: 50 }
+        ]
+      }
     },
     {
       id: 646512,
@@ -125,6 +147,27 @@ export const MOCK_RECIPES = {
       price: 4.8,
       calories: 400,
       protein: 35,
+      extendedIngredients: [
+        { id: 15076, name: "salmon", amount: 2, unit: "fillets", original: "2 salmon fillets" },
+        { id: 11011, name: "asparagus", amount: 1, unit: "bunch", original: "1 bunch asparagus" },
+        { id: 11124, name: "carrots", amount: 2, unit: "", original: "2 carrots, sliced" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Preheat oven to 400°F." },
+            { number: 2, step: "Roast vegetables for 20 minutes." },
+            { number: 3, step: "Add salmon and bake for another 12 minutes." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 400, unit: "kcal", percentOfDailyNeeds: 20 },
+          { name: "Protein", amount: 35, unit: "g", percentOfDailyNeeds: 70 }
+        ]
+      }
     },
     {
       id: 654959,
@@ -140,6 +183,27 @@ export const MOCK_RECIPES = {
       price: 1.8,
       calories: 550,
       protein: 20,
+      extendedIngredients: [
+        { id: 1001, name: "pasta", amount: 1, unit: "lb", original: "1 lb pasta" },
+        { id: 15121, name: "tuna", amount: 2, unit: "cans", original: "2 cans canned tuna" },
+        { id: 4053, name: "olive oil", amount: 2, unit: "tbsp", original: "2 tbsp olive oil" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Boil pasta." },
+            { number: 2, step: "Mix tuna with olive oil and herbs." },
+            { number: 3, step: "Combine with pasta." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 550, unit: "kcal", percentOfDailyNeeds: 27 },
+          { name: "Protein", amount: 20, unit: "g", percentOfDailyNeeds: 40 }
+        ]
+      }
     },
     {
       id: 633033,
@@ -155,6 +219,26 @@ export const MOCK_RECIPES = {
       price: 3.0,
       calories: 480,
       protein: 30,
+      extendedIngredients: [
+        { id: 5062, name: "chicken breast", amount: 1, unit: "lb", original: "1 lb chicken breast" },
+        { id: 2049, name: "thyme", amount: 1, unit: "tsp", original: "1 tsp dried thyme" },
+        { id: 16124, name: "soy sauce", amount: 2, unit: "tbsp", original: "2 tbsp soy sauce" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Marinate chicken with thyme and soy sauce." },
+            { number: 2, step: "Grill chicken for 6-8 minutes per side." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 480, unit: "kcal", percentOfDailyNeeds: 24 },
+          { name: "Protein", amount: 30, unit: "g", percentOfDailyNeeds: 60 }
+        ]
+      }
     },
     {
       id: 644387,
@@ -170,6 +254,25 @@ export const MOCK_RECIPES = {
       price: 1.2,
       calories: 200,
       protein: 8,
+      extendedIngredients: [
+        { id: 11233, name: "kale", amount: 1, unit: "bunch", original: "1 bunch kale" },
+        { id: 11215, name: "garlic", amount: 2, unit: "cloves", original: "2 cloves garlic" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Sauté garlic." },
+            { number: 2, step: "Add kale and cook until wilted." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 200, unit: "kcal", percentOfDailyNeeds: 10 },
+          { name: "Protein", amount: 8, unit: "g", percentOfDailyNeeds: 16 }
+        ]
+      }
     },
     {
       id: 716268,
@@ -185,6 +288,25 @@ export const MOCK_RECIPES = {
       price: 3.5,
       calories: 500,
       protein: 30,
+      extendedIngredients: [
+        { id: 5062, name: "chicken", amount: 0.5, unit: "lb", original: "1/2 lb chicken" },
+        { id: 16098, name: "peanut butter", amount: 2, unit: "tbsp", original: "2 tbsp peanut butter" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Brown chicken." },
+            { number: 2, step: "Stir in peanut butter and broth, simmer." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 500, unit: "kcal", percentOfDailyNeeds: 25 },
+          { name: "Protein", amount: 30, unit: "g", percentOfDailyNeeds: 60 }
+        ]
+      }
     },
     {
       id: 663050,
@@ -200,6 +322,25 @@ export const MOCK_RECIPES = {
       price: 2.0,
       calories: 380,
       protein: 10,
+      extendedIngredients: [
+        { id: 11116, name: "broccoli", amount: 1, unit: "cup", original: "1 cup broccoli" },
+        { id: 12117, name: "coconut milk", amount: 1, unit: "can", original: "1 can coconut milk" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Sauté vegetables." },
+            { number: 2, step: "Add curry paste and coconut milk." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 380, unit: "kcal", percentOfDailyNeeds: 19 },
+          { name: "Protein", amount: 10, unit: "g", percentOfDailyNeeds: 20 }
+        ]
+      }
     },
     {
       id: 661447,
@@ -215,6 +356,25 @@ export const MOCK_RECIPES = {
       price: 1.0,
       calories: 300,
       protein: 5,
+      extendedIngredients: [
+        { id: 20044, name: "sticky rice", amount: 2, unit: "cups", original: "2 cups sticky rice" },
+        { id: 16053, name: "red beans", amount: 0.5, unit: "cup", original: "1/2 cup red bean paste" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Steam rice." },
+            { number: 2, step: "Form balls around bean paste." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 300, unit: "kcal", percentOfDailyNeeds: 15 },
+          { name: "Protein", amount: 5, unit: "g", percentOfDailyNeeds: 10 }
+        ]
+      }
     },
     {
       id: 640062,
@@ -230,6 +390,25 @@ export const MOCK_RECIPES = {
       price: 1.75,
       calories: 320,
       protein: 7,
+      extendedIngredients: [
+        { id: 11168, name: "corn", amount: 2, unit: "cups", original: "2 cups corn kernels" },
+        { id: 4025, name: "mayo", amount: 0.25, unit: "cup", original: "1/4 cup mayo" }
+      ],
+      analyzedInstructions: [
+        {
+          name: "",
+          steps: [
+            { number: 1, step: "Mix corn with batter." },
+            { number: 2, step: "Fry until golden." }
+          ]
+        }
+      ],
+      nutrition: {
+        nutrients: [
+          { name: "Calories", amount: 320, unit: "kcal", percentOfDailyNeeds: 16 },
+          { name: "Protein", amount: 7, unit: "g", percentOfDailyNeeds: 14 }
+        ]
+      }
     },
     {
       id: 642582,

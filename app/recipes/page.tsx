@@ -1,4 +1,4 @@
-import RecipeContent from "@/features/recipes/components/RecipeContent";
+import RecipeContent from "@/features/recipes/components/listing/RecipeContent";
 import { Suspense } from "react";
 
 const Page = () => {

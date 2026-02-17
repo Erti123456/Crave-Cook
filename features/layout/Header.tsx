@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import "../../app/globals.css";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -115,7 +115,10 @@ const HamburgerIcon = ({ isVisible, setIsVisible }: PropsHamburgerIcon) => {
   return (
     <button
       className="cursor-pointer md:hidden shrink-0"
-      onClick={() => setIsVisible(!isVisible)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsVisible(!isVisible);
+      }}
     >
       <Image src="/Icon.png" alt="Hamburger Icon" width={85} height={85} />
     </button>
@@ -128,8 +131,28 @@ interface PopUpDivProps {
 }
 
 function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsVisible(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the listener on unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsVisible]);
   return (
     <div
+      ref={wrapperRef}
       className={`absolute right-0 w-64 h-80 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl
        transition-all ease-in-out duration-300 md:hidden ${
          isVisible
