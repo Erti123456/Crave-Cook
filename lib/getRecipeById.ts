@@ -1,10 +1,16 @@
 import { MOCK_RECIPES } from "./mockData";
 import { Recipe } from "@/types/recipe";
+import apiClient from "./axios";
 
 async function getRecipeById(id: string): Promise<Recipe | undefined> {
-  for (let i = 0; MOCK_RECIPES.results.length > i; i++) {
-    if (MOCK_RECIPES.results[i].id === parseInt(id)) {
-      return MOCK_RECIPES.results[i];
+  try {
+    const res = await apiClient.get<Recipe | null>(
+      `recipes/${id}/information?includeNutrition=true`,
+    );
+    return res.data ?? undefined;
+  } catch (error) {
+    if (error) {
+      return MOCK_RECIPES.results.find((r) => r.id === parseInt(id));
     }
   }
 }

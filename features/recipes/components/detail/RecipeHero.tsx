@@ -42,11 +42,13 @@ const RecipeHero = ({ recipe }: RecipeHeroProps) => {
             label="Servings"
             value={`${recipe.servings}`}
           />
-          <StatItem
-            icon={<HeartPulse size={24} />}
-            label="Health Score"
-            value={`${recipe.healthiness}%`}
-          />
+          {recipe.healthiness !== undefined ? (
+            <StatItem
+              icon={<HeartPulse size={24} />}
+              label="Health Score"
+              value={`${recipe.healthiness}%`}
+            />
+          ) : null}
         </div>
 
         <div className="mt-10 max-w-3xl text-gray-600 leading-relaxed text-lg italic px-4">

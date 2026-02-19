@@ -167,7 +167,7 @@ const CuisineFilter = ({
   }, []);
 
   return (
-    <div className="relative flex-1 md:flex-none" ref={containerRef}>
+    <div className="relative  flex-1 md:flex-none" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between bg-green-400 text-white rounded-xl px-4 h-11 shadow-sm hover:bg-green-500 transition-colors cursor-pointer outline-none text-sm font-semibold focus:ring-0 focus:outline-none"
@@ -185,7 +185,7 @@ const CuisineFilter = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2"
+            className="absolute  top-full left-0 mt-2 w-40 flex flex-col justify-center items-center bg-white border border-gray-100 rounded-2xl shadow-xl z-50 py-2"
           >
             <div
               onClick={() => {
@@ -203,7 +203,7 @@ const CuisineFilter = ({
                   onCuisineChange(category.name);
                   setIsOpen(false);
                 }}
-                className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors"
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 cursor-pointer transition-colors "
               >
                 {category.name}
               </div>
@@ -270,7 +270,7 @@ const SortFilter = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2"
+            className="absolute top-full left-0 mt-2 w-30 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2 "
           >
             <div
               onClick={() => {

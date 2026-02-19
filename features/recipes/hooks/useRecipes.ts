@@ -3,7 +3,7 @@ import apiClient from "@/lib/axios";
 import { RecipeAPIResponse, Recipe } from "@/types/recipe"; // Import Recipe type
 import { MOCK_RECIPES } from "@/lib/mockData";
 
-const USE_MOCK = true; // Toggle this to false when you want to use real data
+export const USE_MOCK = true; // Toggle this to false when you want to use real data
 
 type SortableRecipeKey =
   | "popularity"

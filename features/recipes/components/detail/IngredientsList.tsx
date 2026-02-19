@@ -12,7 +12,9 @@ const IngredientsList = ({ recipe }: IngredientsListProps) => {
 
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">Ingredients</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">
+        Ingredients
+      </h2>
       <ul className="space-y-4">
         {recipe.extendedIngredients.map((ingredient) => (
           <li key={ingredient.id} className="flex items-start gap-3">
