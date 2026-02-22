@@ -1,5 +1,5 @@
 # Project Context & Roadmap
-**Last Updated:** February 5, 2026
+**Last Updated:** February 21, 2026
 **User Identity:** Jarvis (Assistant)
 
 ## 🛑 User Constraints & Rules (CRITICAL)
@@ -18,64 +18,68 @@
 *   **Home Page (SSR):** Fetch data on server, no `useEffect`, cache categories.
 *   **Recipe Discovery:** Client-side search with cuisine and diet filtering.
 *   **Dev Efficiency:** Using mock data (`lib/mockData.ts`) to preserve Spoonacular API points.
+*   **User Engagement:** Clerk Authentication and Favorites system (Supabase planned).
 
 ## 📜 Conversation Log & Key Decisions
-### Feb 9 (Latest Progress)
-*   **Search & Filter Refinements (Step 2 Completed & Enhanced):**
-    *   **"Type & Switch" Bug Fix:** Corrected `handleCuisineChange` and `handleSortChange` in `SearchBar.tsx` to preserve the `q` (search query) parameter when changing cuisine or sort filters, preventing loss of typed input.
-    *   **Functional Mock Sorting:**
-        *   Expanded `lib/mockData.ts` with 20 diverse mock recipes, including `popularity`, `healthiness`, `price`, `calories`, and `protein` properties.
-        *   Updated `types/recipe.ts` to include these new sortable properties in the `Recipe` interface.
-        *   Refactored `useRecipes.ts` to implement local filtering and sorting of mock data based on `searchQuery`, `cuisine`, and `sort` parameters, eliminating `any` types and using `const` for improved type safety and code quality. `sortDirection` logic was added for 'asc' (time/price) and 'desc' (others).
-        *   Updated `SearchBar.tsx` with more comprehensive sorting options (e.g., "Quickest", "Lowest Calories", "Highest Protein", "Surprise Me").
-    *   **Home Page Search Bar Remake:**
-        *   `HeroSection.tsx` reverted to using `MainSearchInput.tsx`.
-        *   `MainSearchInput.tsx` was fully remade using a "Container Approach" for improved aesthetics (focus-within effect for the entire search unit), responsive search button (desktop/mobile), and robust navigation with `encodeURIComponent`.
-    *   **Global Color Update:** All instances of `green-300` were replaced with `green-400` in `HeroSection.tsx`, `CategorySection.tsx`, `MealCard.tsx`, and `Header.tsx` for a consistent, deeper green aesthetic.
-    *   **Streamlined Header Navigation & Aesthetics:**
-        *   `features/layout/Header.tsx` was updated to remove the old toggling search input.
-        *   A permanent magnifying glass icon now appears in the header and links directly to `/recipes`.
-        *   The "Recipes" navigation link was renamed to "Browse".
-        *   The mobile menu (`PopUpDiv`) was updated to reflect these changes, including a "Search" link, and improved closing UX.
-        *   Implemented a dynamic transparency effect for the header on the home page: transparent at the top, becoming solid `bg-green-400` on scroll or on other pages. The header was changed to `fixed` positioning.
+
+### Feb 21 (Recipe Detail & Auth Progress)
+*   **Recipe Data Infrastructure:**
+    *   **Types Updated:** `types/recipe.ts` expanded with `Ingredient`, `Instruction`, `Nutrient` interfaces.
+    *   **Mock Data Richness:** `lib/mockData.ts` updated with detailed ingredients, instructions, and nutrition for the first 10 recipes to support UI development without API calls.
+    *   **Data Access:** Created `lib/getRecipeById.ts` using a robust `async` loop to find recipes by ID, prepared for `apiClient` integration.
+*   **Recipe Detail Page Implementation:**
+    *   **Dynamic Routing:** Created `app/recipes/[id]/page.tsx` as a Server Component using Next.js 16 `params` Promise logic.
+    *   **Architecture:** Reorganized components into `features/recipes/components/listing` and `features/recipes/components/detail`.
+    *   **UI Components (Detail):**
+        *   `RecipeHero.tsx`: Premium, responsive hero with high-quality images (Unsplash), HTML summary handling, and quick stats.
+        *   `NutritionGrid.tsx`: Styled 4-column grid (Calories, Protein, Fat, Carbs) inspired by professional food blog designs.
+        *   `IngredientsList.tsx`: Checked list using `lucide-react` icons.
+        *   `InstructionsList.tsx`: Numbered steps with custom styled indicators.
+    *   **UX Fixes:** Implemented `ErrorHandle` for invalid IDs and added a "Back to Browse" link.
+*   **Layout & Global Navigation:**
+    *   **Header Refinement:** Fixed mobile menu (PopUpDiv) click-outside logic and event bubbling. Improved header to be transparent only on Home top-scroll and solid `bg-green-400` on all other pages.
+    *   **Clerk Integration:** Added `ClerkProvider` to `RootLayout` and initial `clerkMiddleware`. Integrated `UserButton` and `SignedOut`/`SignedIn` logic into the Header.
+*   **Search Improvements:**
+    *   **SearchBar.tsx:** Fixed Tailwind v4 animation issues. Replaced non-standard classes with `framer-motion` for smooth dropdown transitions and `react-icons` for chevrons.
 
 ## 📂 Project Structure (Current)
 ```text
 /crave-cook
 ├── app/
 │   ├── recipes/
-│   │   └── page.tsx      # Entry point (Suspense wrapper)
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── providers.tsx
+│   │   ├── [id]/
+│   │   │   └── page.tsx      # SSR Recipe Detail Page
+│   │   └── page.tsx          # Recipe Listing (Search/Filter)
+│   ├── sign-in/
+│   │   └── [[...sign-in]]/   # Clerk Custom Sign-In
+│   ├── sign-up/
+│   │   └── [[...sign-up]]/   # Clerk Custom Sign-Up
+│   ├── layout.tsx            # ClerkProvider & Root Layout
+│   ├── page.tsx              # Home Page
+│   └── providers.tsx         # React Query & Global Providers
 ├── features/
-│   ├── home/
-│   │   └── components/
-│   │       ├── CategorySection.tsx # Updated color
-│   │       ├── HeroSection.tsx     # Uses MainSearchInput, updated color
-│   │       └── MainSearchInput.tsx # Remade with new design & navigation
 │   ├── layout/
-│   │   └── Header.tsx          # Remade for streamlined navigation and dynamic transparency
+│   │   └── Header.tsx        # Responsive Header w/ Auth & Scroll logic
 │   └── recipes/
 │       ├── components/
-│       │   ├── MealCard.tsx        # Updated color
-│       │   ├── MealsSearched.tsx   # Passes sort param to hook
-│       │   ├── RecipeContent.tsx
-│       │   └── SearchBar.tsx       # Debounced, bug fixes, new sort options
+│       │   ├── detail/       # RecipeHero, NutritionGrid, IngredientsList, InstructionsList
+│       │   └── listing/      # MealCard, SearchBar, MealsSearched, RecipeContent
 │       └── hooks/
-│           ├── useRecipes.ts       # Mock data filtering/sorting, removed 'any'
+│           ├── useRecipes.ts # Mock/API Switch logic
 │           └── useCategories.ts
 ├── lib/
-│   ├── axios.ts
-│   └── mockData.ts         # Expanded mock recipes, added sortable properties
+│   ├── axios.ts              # Spoonacular apiClient configuration
+│   ├── getRecipeById.ts      # Fetcher for Detail Page
+│   └── mockData.ts           # Rich Mock Data (v2)
 └── types/
-    └── recipe.ts           # Updated Recipe interface with sortable properties
-
+    └── recipe.ts             # Strict TypeScript definitions
 ```
 
 ## 🚀 Next Actions for Developer
-1.  **Recipe Detail Page (Step 3):**
-    *   Make the `MealCards` clickable (add `Link` to `/recipes/[id]`).
-    *   Create `app/recipes/[id]/page.tsx`.
-    *   Implement SSR fetching for recipe details.
-    *   Create `RecipeDetail` component in `features/recipes/components/`.
+1.  **Authentication UI:** Finalize the custom `sign-in` and `sign-up` pages with the `pt-32` layout fix.
+2.  **User Profile:** Implement `app/user-profile/[[...user-profile]]/page.tsx` using Clerk's `<UserProfile />`.
+3.  **Favorites Logic (Supabase):** 
+    *   Initialize Supabase client.
+    *   Create `favorites` table and link to Clerk `userId`.
+    *   Implement "Heart" button in `MealCard`.
+4.  **Real API Transition:** Flip `USE_MOCK` to `false` once API limits reset and audit data mapping.

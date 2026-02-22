@@ -21,60 +21,62 @@ export default function Header() {
 
   const isHomePage = pathname === "/";
 
-    useEffect(() => {
-      const handleScroll = () => {
-        if (window.scrollY > 50) {
-          setIsScrolled(true);
-        } else {
-          setIsScrolled(false);
-        }
-      };
-  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    function homePage() {
       if (isHomePage) {
         window.addEventListener("scroll", handleScroll);
         handleScroll();
       } else {
         setIsScrolled(true);
       }
-  
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }, [isHomePage]);
-  
-    return (
-      <header className="fixed top-0 left-0 w-full z-50">
-        <Nav isHomePage={isHomePage} isScrolled={isScrolled}>
-          <Logo />
-          <ListOfLinks />
-          <HamburgerIcon isVisible={isVisible} setIsVisible={setIsVisible} />
-        </Nav>
-        {/* Mobile Menu */}
-        <PopUpDiv isVisible={isVisible} setIsVisible={setIsVisible} />
-      </header>
-    );
-  }
-  
-  interface NavProps {
-    children: ReactNode;
-    isHomePage: boolean;
-    isScrolled: boolean;
-  }
-  
-  const Nav = ({ children, isHomePage, isScrolled }: NavProps) => {
-    const isMobile = useIsMobile(768);
-    const isSolid = !isHomePage || isScrolled || isMobile;
-  
-    return (
-      <nav
-        className={`flex justify-between items-center p-4 transition-all duration-300 ${
-          isSolid ? "bg-green-400 shadow-md" : "bg-transparent"
-        } `}
-      >
-        {children}
-      </nav>
-    );
-  };
+    }
+    homePage();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isHomePage]);
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50">
+      <Nav isHomePage={isHomePage} isScrolled={isScrolled}>
+        <Logo />
+        <ListOfLinks />
+        <HamburgerIcon isVisible={isVisible} setIsVisible={setIsVisible} />
+      </Nav>
+      {/* Mobile Menu */}
+      <PopUpDiv isVisible={isVisible} setIsVisible={setIsVisible} />
+    </header>
+  );
+}
+
+interface NavProps {
+  children: ReactNode;
+  isHomePage: boolean;
+  isScrolled: boolean;
+}
+
+const Nav = ({ children, isHomePage, isScrolled }: NavProps) => {
+  const isMobile = useIsMobile(768);
+  const isSolid = !isHomePage || isScrolled || isMobile;
+
+  return (
+    <nav
+      className={`flex justify-between items-center p-4 transition-all duration-300 ${
+        isSolid ? "bg-green-400 shadow-md" : "bg-transparent"
+      } `}
+    >
+      {children}
+    </nav>
+  );
+};
 
 const Logo = () => {
   return (
@@ -106,6 +108,12 @@ const ListOfLinks = () => {
       <Link href="/recipes">Browse</Link>
       <SignedIn>
         <Link href="/favorites">Favorites</Link>
+        <Link
+          href="/user-profile"
+          className="flex justify-center items-center gap-3"
+        >
+          Profile
+        </Link>
       </SignedIn>
 
       <Link href="/recipes?focus=true" className="mt-1  text-xl">

@@ -1,5 +1,5 @@
 "use client";
-import useCategories from "@/features/recipes/hooks/useCategories";
+import { getCategories } from "@/lib/getCategories";
 import { Category } from "@/types/recipe";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect, useRef } from "react";
@@ -8,8 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
 
 const SearchBar = () => {
-  const { data } = useCategories();
-  const categories = data || [];
+  const categories = getCategories();
   const searchParams = useSearchParams();
   const router = useRouter();
 

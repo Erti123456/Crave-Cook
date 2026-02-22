@@ -4,15 +4,14 @@ import React, { ReactNode } from "react";
 import { useState, useRef } from "react";
 import useIsMobile from "@/globalHooks/useIsMobile";
 import { Category } from "@/types/recipe";
-import useCategories from "@/features/recipes/hooks/useCategories";
 import { useRouter } from "next/navigation";
 
-interface ErrorProps {
-  children?: ReactNode;
+interface CategorySectionProps {
+  categories: Category[];
 }
+
 interface FoodCategoriesContainerProps {
   categories: Category[];
-  isLoading: boolean;
 }
 interface ButtonLeftProps {
   isFirst: boolean;
@@ -31,38 +30,15 @@ interface DotsProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const CategorySection = () => {
-  const { data, isLoading, isError, error } = useCategories();
-  const mealCat = data ? data : [];
-
+const CategorySection = ({ categories }: CategorySectionProps) => {
   return (
     <section className="flex flex-col justify-center items-center w-full">
       <MainTextCategorySection />
-      {isError ? (
-        <ErrorMessage>{error?.message}</ErrorMessage>
-      ) : (
-        <FoodCategoriesContainer categories={mealCat} isLoading={isLoading} />
-      )}
+      <FoodCategoriesContainer categories={categories} />
     </section>
   );
 };
 
-const ErrorMessage = ({ children }: ErrorProps) => {
-  return <p>{children}</p>;
-};
-const Loading = () => {
-  return (
-    <div className="w-full md:w-1/2 lg:w-1/4 shrink-0 px-2 h-full flex items-center justify-center animate-pulse">
-      <div className="relative w-full h-[300px] flex flex-col items-center justify-center rounded-4xl ">
-        <div className="relative w-35 sm:w-[190px] h-[180px] bg-gray-300 rounded-2xl"></div>
-
-        <div className="mt-4 flex items-center justify-center w-full px-10">
-          <div className="h-6 w-full bg-gray-300 rounded-md"></div>
-        </div>
-      </div>
-    </div>
-  );
-};
 const MainTextCategorySection = () => {
   return (
     <div className="bg-green-400/80 backdrop-blur-sm py-6 px-10 border w-full flex justify-center items-center border-none">
@@ -75,7 +51,6 @@ const MainTextCategorySection = () => {
 
 const FoodCategoriesContainer = ({
   categories,
-  isLoading,
 }: FoodCategoriesContainerProps) => {
   const isMobile = useIsMobile();
   const isTablet = useIsMobile(1024); //tablet dimestions;
@@ -124,11 +99,7 @@ const FoodCategoriesContainer = ({
             onScroll={handleScroll}
             className="flex h-full items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide"
           >
-            {isLoading ? (
-              Array.from({ length: itemsPerPage }).map((_, i) => (
-                <Loading key={i} />
-              ))
-            ) : categories.length === 0 && !isLoading ? (
+            {categories.length === 0 ? (
               <p>No meal categories found at the moment.</p>
             ) : (
               categories.map((category) => (
@@ -184,7 +155,6 @@ const ButtonRight = ({ goNext, isLast }: ButtorRightProps) => {
 };
 
 const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
-  // Placeholder image if no image is provided
   const categoryImage = mealCategory.image || "/high-quality-food.jpg";
   const router = useRouter();
 
@@ -196,7 +166,7 @@ const MealTypeContainer = ({ mealCategory }: MealTypeContainerProps) => {
         router.push(`recipes?cuisine=${mealCategory.name}`);
       }}
     >
-      <div className="relative w-full h-[300px] flex flex-col items-center justify-center border-green-400 border-2 rounded-4xl bg-white">
+      <div className="relative w-102 md:w-full h-[300px] flex flex-col items-center justify-center border-green-400 border-2 rounded-4xl bg-white">
         <div className={`relative w-48  sm:w-[190px] h-[200px]`}>
           <Image
             src={categoryImage}
