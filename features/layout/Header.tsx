@@ -45,7 +45,7 @@ export default function Header() {
   }, [isHomePage]);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
+    <header className={`${isHomePage ? "fixed" : "sticky"} top-0 left-0 w-full z-50`}>
       <Nav isHomePage={isHomePage} isScrolled={isScrolled}>
         <Logo />
         <ListOfLinks />

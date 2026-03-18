@@ -1,17 +1,20 @@
 import Image from "next/image";
 import { Recipe } from "@/types/recipe";
 import Link from "next/link";
+import { FaHeart } from "react-icons/fa";
+import { useState } from "react";
 
 interface MealCardProps {
   recipe: Recipe;
 }
 
 const MealCard = ({ recipe }: MealCardProps) => {
+  const [heartClicked, setHeartClicked] = useState(false);
   return (
     <>
       <Link
         href={`/recipes/${recipe.id}`}
-        className="w-2/3 sm:w-1/3 h-2/3 md:w-1/4 lg:w-1/6  border-green-400 rounded-3xl border-2 flex items-center justify-center hover:scale-110 flex-col gap-4 p-4 hover:shadow-xl transition-all cursor-pointer bg-white "
+        className="w-2/3 sm:w-1/3 h-2/3 md:w-1/4 lg:w-1/6  border-green-400 rounded-3xl border-2 flex items-center justify-center hover:scale-110 relative flex-col gap-4 p-4 hover:shadow-xl transition-all cursor-pointer bg-white "
       >
         <div className="relative w-full aspect-square overflow-hidden rounded-xl">
           <Image
@@ -30,6 +33,13 @@ const MealCard = ({ recipe }: MealCardProps) => {
             {recipe.readyInMinutes} mins
           </span>
         )}
+        <FaHeart
+          onClick={(e) => {
+            e.preventDefault();
+            setHeartClicked(!heartClicked);
+          }}
+          className={`absolute bottom-2 right-2 cursor-pointer size-6 ${heartClicked ? "text-red-600" : "text-gray-400"}`}
+        />
       </Link>
     </>
   );

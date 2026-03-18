@@ -12,7 +12,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     return <ErrorHandle />;
   }
   return (
-    <main className="min-h-screen pt-20 pb-16">
+    <main className="min-h-screen pb-16">
       <RecipeHero recipe={clickedRecipe} />
       <NutritionGrid recipe={clickedRecipe} />
 
