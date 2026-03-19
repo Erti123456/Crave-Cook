@@ -1,19 +1,35 @@
 import RecipeHero from "@/features/recipes/components/detail/RecipeHero";
 import NutritionGrid from "@/features/recipes/components/detail/NutritionGrid";
-import IngredientsList from "@/features/recipes/components/detail/IngredientsList"; // Added import
-import InstructionsList from "@/features/recipes/components/detail/InstructionsList"; // Added import
+import IngredientsList from "@/features/recipes/components/detail/IngredientsList";
+import InstructionsList from "@/features/recipes/components/detail/InstructionsList";
 import getRecipeById from "@/lib/getRecipeById";
-import Link from "next/link"; // Added Link import for ErrorHandle
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import prisma from "@/lib/prisma";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const clickedRecipe = await getRecipeById(id);
+  
+  const { userId } = await auth();
+  const isFavorited = userId && clickedRecipe
+    ? await prisma.favorite.findUnique({
+        where: {
+          userId_recipeId: {
+            userId,
+            recipeId: id,
+          },
+        },
+      })
+    : false;
+
   if (!clickedRecipe) {
     return <ErrorHandle />;
   }
+  
   return (
     <main className="min-h-screen pb-16">
-      <RecipeHero recipe={clickedRecipe} />
+      <RecipeHero recipe={clickedRecipe} isFavorited={!!isFavorited} />
       <NutritionGrid recipe={clickedRecipe} />
 
       {/* Ingredients and Instructions Section - Responsive Layout */}

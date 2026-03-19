@@ -1,15 +1,38 @@
+"use client";
 import Image from "next/image";
 import { Recipe } from "@/types/recipe";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter, usePathname } from "next/navigation";
+import toggleFavorite from "../../actions/toggleFavorite";
 
 interface MealCardProps {
   recipe: Recipe;
+  isFavorited: boolean;
 }
 
-const MealCard = ({ recipe }: MealCardProps) => {
-  const [heartClicked, setHeartClicked] = useState(false);
+const MealCard = ({ recipe, isFavorited }: MealCardProps) => {
+  const [heartClicked, setHeartClicked] = useState(isFavorited);
+  const { userId, isLoaded } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleHeartClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (!isLoaded) return;
+
+    if (!userId) {
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(pathname)}`);
+      return;
+    }
+
+    await toggleFavorite(recipe.id.toString());
+    setHeartClicked(!heartClicked);
+  };
+
   return (
     <>
       <Link
@@ -34,10 +57,7 @@ const MealCard = ({ recipe }: MealCardProps) => {
           </span>
         )}
         <FaHeart
-          onClick={(e) => {
-            e.preventDefault();
-            setHeartClicked(!heartClicked);
-          }}
+          onClick={handleHeartClick}
           className={`absolute bottom-2 right-2 cursor-pointer size-6 ${heartClicked ? "text-red-600" : "text-gray-400"}`}
         />
       </Link>

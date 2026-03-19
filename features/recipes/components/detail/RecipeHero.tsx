@@ -1,12 +1,35 @@
+"use client";
 import { Recipe } from "@/types/recipe";
 import Image from "next/image";
-import { Timer, HeartPulse, Users } from "lucide-react";
+import { Timer, HeartPulse, Users, Heart } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter, usePathname } from "next/navigation";
+import toggleFavorite from "../../actions/toggleFavorite";
 
 interface RecipeHeroProps {
   recipe: Recipe;
+  isFavorited: boolean;
 }
 
-const RecipeHero = ({ recipe }: RecipeHeroProps) => {
+const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
+  const [heartClicked, setHeartClicked] = useState(isFavorited);
+  const { userId, isLoaded } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleHeartClick = async () => {
+    if (!isLoaded) return;
+
+    if (!userId) {
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(pathname)}`);
+      return;
+    }
+
+    await toggleFavorite(recipe.id.toString());
+    setHeartClicked(!heartClicked);
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-3xl shadow-2xl mt-8 group">
@@ -24,6 +47,17 @@ const RecipeHero = ({ recipe }: RecipeHeroProps) => {
             {recipe.cuisines[0].toUpperCase()}
           </div>
         )}
+
+        <button
+          onClick={handleHeartClick}
+          className="absolute top-6 right-6 bg-white/20 p-3 rounded-full backdrop-blur-md hover:bg-white/40 transition-colors"
+        >
+          <Heart
+            className={`size-8 transition-colors ${
+              heartClicked ? "fill-red-500 text-red-500" : "text-white"
+            }`}
+          />
+        </button>
       </div>
 
       <div className="mt-8 flex flex-col items-center text-center">

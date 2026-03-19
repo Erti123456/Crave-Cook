@@ -108,12 +108,7 @@ const ListOfLinks = () => {
       <Link href="/recipes">Browse</Link>
       <SignedIn>
         <Link href="/favorites">Favorites</Link>
-        <Link
-          href="/user-profile"
-          className="flex justify-center items-center gap-3"
-        >
-          Profile
-        </Link>
+        <UserButton />
       </SignedIn>
 
       <Link href="/recipes?focus=true" className="mt-1  text-xl">
