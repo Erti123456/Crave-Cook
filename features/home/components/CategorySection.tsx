@@ -32,7 +32,7 @@ interface DotsProps {
 
 const CategorySection = ({ categories }: CategorySectionProps) => {
   return (
-    <section className="flex flex-col justify-center items-center w-full">
+    <section className="flex flex-col justify-center items-center w-full pb-10">
       <MainTextCategorySection />
       <FoodCategoriesContainer categories={categories} />
     </section>

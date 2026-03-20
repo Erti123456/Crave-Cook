@@ -9,7 +9,6 @@ export default function HomePage() {
     <div>
       <HeroSection />
       <CategorySection categories={categories} />
-      <div className="h-200"></div>
     </div>
   );
 }

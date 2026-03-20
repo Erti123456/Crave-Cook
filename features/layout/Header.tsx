@@ -4,7 +4,7 @@ import { ReactNode, useState, useEffect, useRef } from "react";
 import "../../app/globals.css";
 import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { usePathname } from "next/navigation"; // Import usePathname
+import { usePathname } from "next/navigation";
 import useIsMobile from "@/globalHooks/useIsMobile";
 import {
   SignInButton,
@@ -51,7 +51,6 @@ export default function Header() {
         <ListOfLinks />
         <HamburgerIcon isVisible={isVisible} setIsVisible={setIsVisible} />
       </Nav>
-      {/* Mobile Menu */}
       <PopUpDiv isVisible={isVisible} setIsVisible={setIsVisible} />
     </header>
   );
@@ -154,10 +153,8 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
       }
     }
 
-    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Clean up the listener on unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
