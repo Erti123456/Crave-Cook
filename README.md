@@ -33,18 +33,22 @@ A high-performance, full-stack recipe discovery platform built with **Next.js**,
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/your-username/crave-cook.git
 cd crave-cook
 ```
 
 ### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Set up Environment Variables
+
 Create a `.env` file in the root directory and add your credentials:
+
 ```env
 # Clerk Authentication
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
@@ -58,14 +62,17 @@ NEXT_PUBLIC_SPOONACULAR_API_KEY=your_api_key_here
 ```
 
 ### 4. Push Database Schema
+
 ```bash
 npx prisma db push
 ```
 
 ### 5. Run the development server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) to see the app in action.
 
 ---
@@ -94,4 +101,4 @@ This project is open-source and available under the MIT License.
 
 ---
 
-Built with ❤️ by [Your Name]
+Built with ❤️ by Samuel Dolezal
