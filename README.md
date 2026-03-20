@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍳 Crave & Cook
 
-## Getting Started
+A high-performance, full-stack recipe discovery platform built with **Next.js**, **TypeScript**, and **Supabase**. Discover, search, and save your favorite recipes from a database of thousands, powered by the Spoonacular API.
 
-First, run the development server:
+---
 
+## ✨ Key Features
+
+- **🚀 Server-Side Power:** Leverages Next.js Server Components and SSR for lightning-fast discovery and SEO-optimized recipe detail pages.
+- **🔍 Advanced Search:** Real-time client-side search with filtering by cuisine, diet, and ingredients using TanStack Query.
+- **❤️ Favorites System:** Securely save your favorite recipes to your personal collection, persisted in **Supabase** via **Prisma ORM**.
+- **🔐 Secure Authentication:** Complete user management (Sign-in, Sign-up, User Profile) powered by **Clerk**.
+- **📊 Nutrition Insights:** Detailed nutrition breakdowns, ingredient lists with icons, and step-by-step instructions for every recipe.
+- **📱 Responsive & Interactive:** Mobile-first design with smooth animations using **Framer Motion** and **Tailwind CSS**.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **Database:** [Supabase (PostgreSQL)](https://supabase.com/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Authentication:** [Clerk](https://clerk.com/)
+- **Data Fetching:** [TanStack Query v5](https://tanstack.com/query/latest)
+- **API:** [Spoonacular API](https://spoonacular.com/food-api)
+- **Icons:** [Lucide React](https://lucide.dev/) & [React Icons](https://react-icons.github.io/react-icons/)
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/crave-cook.git
+cd crave-cook
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Set up Environment Variables
+Create a `.env` file in the root directory and add your credentials:
+```env
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Database (Supabase)
+DATABASE_URL="postgresql://postgres.[REF]:[PASS]@db.[REF].supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
 
-## Learn More
+# Spoonacular API
+NEXT_PUBLIC_SPOONACULAR_API_KEY=your_api_key_here
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Push Database Schema
+```bash
+npx prisma db push
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Run the development server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to see the app in action.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+/crave-cook
+├── app/                  # Next.js App Router (Pages & Layouts)
+├── features/             # Feature-based components and logic
+│   ├── home/             # Hero, Category sections
+│   ├── layout/           # Global Header & Footer
+│   └── recipes/          # Search, Details, and Favorites logic
+├── lib/                  # Shared utilities (API clients, Prisma)
+├── prisma/               # Database schema and migrations
+├── public/               # Static assets (logos, images)
+├── types/                # Global TypeScript interfaces
+└── globalHooks/          # Shared React hooks
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📜 License
+
+This project is open-source and available under the MIT License.
+
+---
+
+Built with ❤️ by [Your Name]
