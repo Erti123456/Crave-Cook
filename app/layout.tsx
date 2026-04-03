@@ -1,4 +1,5 @@
-import AppChrome from "@/features/layout/AppChrome";
+import Header from "@/features/layout/Header";
+import Footer from "@/features/layout/Footer";
 import Providers from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
@@ -19,7 +20,9 @@ export default function RootLayout({
       <html lang="en">
         <body className="flex flex-col min-h-screen">
           <Providers>
-            <AppChrome>{children}</AppChrome>
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
           </Providers>
         </body>
       </html>
