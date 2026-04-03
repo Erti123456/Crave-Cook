@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const { userId } = await auth();
   const favorites = userId

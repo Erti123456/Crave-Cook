@@ -7,6 +7,8 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const clickedRecipe = await getRecipeById(id);
