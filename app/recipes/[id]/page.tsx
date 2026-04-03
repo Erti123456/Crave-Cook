@@ -5,7 +5,7 @@ import InstructionsList from "@/features/recipes/components/detail/InstructionsL
 import getRecipeById from "@/lib/getRecipeById";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import prisma from "@/lib/prisma";
+import { getIsRecipeFavorited } from "@/lib/favorites";
 
 export const dynamic = "force-dynamic";
 
@@ -14,15 +14,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const clickedRecipe = await getRecipeById(id);
   
   const { userId } = await auth();
-  const isFavorited = userId && clickedRecipe
-    ? await prisma.favorite.findUnique({
-        where: {
-          userId_recipeId: {
-            userId,
-            recipeId: id,
-          },
-        },
-      })
+  const isFavorited = clickedRecipe
+    ? await getIsRecipeFavorited(userId, id)
     : false;
 
   if (!clickedRecipe) {

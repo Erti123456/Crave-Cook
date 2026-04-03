@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
-import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import getRecipeById from "@/lib/getRecipeById";
 import MealCard from "@/features/recipes/components/listing/MealCard";
+import { getFavoriteRecipeIds } from "@/lib/favorites";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +13,8 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  const favorites = await prisma.favorite.findMany({
-    where: { userId },
-  });
-
-  const recipePromises = favorites.map((f) => getRecipeById(f.recipeId));
+  const { recipeIds, available } = await getFavoriteRecipeIds(userId);
+  const recipePromises = recipeIds.map((recipeId) => getRecipeById(recipeId));
   const recipes = (await Promise.all(recipePromises)).filter(Boolean);
 
   return (
@@ -25,6 +22,11 @@ const Page = async () => {
       <h1 className="text-3xl font-black text-gray-900 mb-10 text-center">
         Your Favorite Recipes
       </h1>
+      {!available ? (
+        <p className="text-center text-sm text-amber-700 mb-8">
+          Favorites are temporarily unavailable. You can still browse recipes.
+        </p>
+      ) : null}
       <div className="flex flex-wrap gap-10 justify-center items-center">
         {recipes.length > 0 ? (
           recipes.map((recipe) => (

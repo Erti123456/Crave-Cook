@@ -31,7 +31,8 @@ const toggleFavorite = async (recipeId: string) => {
     }
     revalidatePath("/recipes");
   } catch (err) {
-    throw err;
+    console.error("Favorite toggle failed:", err);
+    return { ok: false };
   }
 };
 
