@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import getRecipeById from "@/lib/getRecipeById";
 import MealCard from "@/features/recipes/components/listing/MealCard";
-import type { Favorite } from "@prisma/client";
 
 const Page = async () => {
   const { userId } = await auth();
@@ -16,7 +15,9 @@ const Page = async () => {
     where: { userId },
   });
 
-  const recipePromises = favorites.map((f: Favorite) => getRecipeById(f.recipeId));
+  const recipePromises = favorites.map((f: { recipeId: string }) =>
+    getRecipeById(f.recipeId),
+  );
   const recipes = (await Promise.all(recipePromises)).filter(Boolean);
 
   return (
