@@ -2,6 +2,7 @@
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+
 const toggleFavorite = async (recipeId: string) => {
   try {
     const { userId } = await auth();
@@ -29,7 +30,9 @@ const toggleFavorite = async (recipeId: string) => {
         },
       });
     }
+
     revalidatePath("/recipes");
+    revalidatePath("/favorites");
   } catch (err) {
     throw err;
   }

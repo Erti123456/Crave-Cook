@@ -31,6 +31,7 @@ const MealCard = ({ recipe, isFavorited }: MealCardProps) => {
 
     await toggleFavorite(recipe.id.toString());
     setHeartClicked(!heartClicked);
+    router.refresh();
   };
 
   return (

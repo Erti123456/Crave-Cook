@@ -8,6 +8,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Crave & Cook",
   description: "nextJS layout",
+  icons: {
+    icon: "/Icon.png",
+    shortcut: "/Icon.png",
+    apple: "/Icon.png",
+  },
 };
 
 export default function RootLayout({

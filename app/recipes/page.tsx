@@ -11,7 +11,7 @@ const Page = async () => {
   const favoritesIds: string[] = favorites.map((f) => {
     return f.recipeId;
   });
-  console.log(favoritesIds);
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <RecipeContent favoritesIDS={favoritesIds} />
