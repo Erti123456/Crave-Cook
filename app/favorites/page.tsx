@@ -19,8 +19,9 @@ const Page = async () => {
   const recipePromises = favorites.map((f: { recipeId: string }) =>
     getRecipeById(f.recipeId),
   );
-  const recipes = (await Promise.all(recipePromises)).filter(
-    (recipe): recipe is Recipe => Boolean(recipe),
+  const fetchedRecipes: Array<Recipe | undefined> = await Promise.all(recipePromises);
+  const recipes = fetchedRecipes.filter(
+    (recipe: Recipe | undefined): recipe is Recipe => Boolean(recipe),
   );
 
   return (
