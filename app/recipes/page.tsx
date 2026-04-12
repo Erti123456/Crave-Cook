@@ -8,7 +8,7 @@ const Page = async () => {
   const favorites = userId
     ? await prisma.favorite.findMany({ where: { userId } })
     : [];
-  const favoritesIds: string[] = favorites.map((f) => {
+  const favoritesIds: string[] = favorites.map((f: { recipeId: string }) => {
     return f.recipeId;
   });
 
