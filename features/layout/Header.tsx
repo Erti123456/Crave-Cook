@@ -6,13 +6,7 @@ import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import useIsMobile from "@/globalHooks/useIsMobile";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(false);
@@ -170,7 +164,7 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
        }`}
     >
       <ul className="flex flex-col space-y-8 items-center">
-        <Link href="/signin" onClick={() => setIsVisible(false)}>
+        <Link href="/sign-in" onClick={() => setIsVisible(false)}>
           Sign In
         </Link>
         <Link href="/" onClick={() => setIsVisible(false)}>
