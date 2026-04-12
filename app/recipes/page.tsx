@@ -5,12 +5,18 @@ import prisma from "@/lib/prisma";
 
 const Page = async () => {
   const { userId } = await auth();
-  const favorites = userId
-    ? await prisma.favorite.findMany({ where: { userId } })
-    : [];
-  const favoritesIds: string[] = favorites.map((f: { recipeId: string }) => {
-    return f.recipeId;
-  });
+  const favoritesIds: string[] = [];
+
+  if (userId) {
+    try {
+      const favorites = await prisma.favorite.findMany({ where: { userId } });
+      favoritesIds.push(
+        ...favorites.map((f: { recipeId: string }) => f.recipeId),
+      );
+    } catch (error) {
+      console.error("Failed to load recipe favorites", error);
+    }
+  }
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

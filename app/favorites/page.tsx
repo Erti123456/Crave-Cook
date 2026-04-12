@@ -12,17 +12,24 @@ const Page = async () => {
     redirect("/sign-in");
   }
 
-  const favorites = await prisma.favorite.findMany({
-    where: { userId },
-  });
+  let recipes: Recipe[] = [];
 
-  const recipePromises = favorites.map((f: { recipeId: string }) =>
-    getRecipeById(f.recipeId),
-  );
-  const fetchedRecipes: Array<Recipe | undefined> = await Promise.all(recipePromises);
-  const recipes = fetchedRecipes.filter(
-    (recipe: Recipe | undefined): recipe is Recipe => Boolean(recipe),
-  );
+  try {
+    const favorites = await prisma.favorite.findMany({
+      where: { userId },
+    });
+
+    const recipePromises = favorites.map((f: { recipeId: string }) =>
+      getRecipeById(f.recipeId),
+    );
+    const fetchedRecipes: Array<Recipe | undefined> =
+      await Promise.all(recipePromises);
+    recipes = fetchedRecipes.filter(
+      (recipe: Recipe | undefined): recipe is Recipe => Boolean(recipe),
+    );
+  } catch (error) {
+    console.error("Failed to load favorites", error);
+  }
 
   return (
     <div className="p-8 mt-20">
