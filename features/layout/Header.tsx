@@ -6,7 +6,7 @@ import Image from "next/image";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import useIsMobile from "@/globalHooks/useIsMobile";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(false);
@@ -89,20 +89,28 @@ const Logo = () => {
 };
 
 const ListOfLinks = () => {
+  const { isLoaded, userId } = useAuth();
+  const showGuestLinks = !isLoaded || !userId;
+  const showUserLinks = isLoaded && !!userId;
+
   return (
     <ul
       className={`hidden md:flex space-x-10 font-medium h-full items-center mr-8`}
     >
-      <SignedOut>
-        <Link href="/sign-up">Sign Up</Link>
-        <Link href="/sign-in">Log In </Link>
-      </SignedOut>
+      {showGuestLinks ? (
+        <>
+          <Link href="/sign-up">Sign Up</Link>
+          <Link href="/sign-in">Log In</Link>
+        </>
+      ) : null}
       <Link href="/">Home</Link>
       <Link href="/recipes">Browse</Link>
-      <SignedIn>
-        <Link href="/favorites">Favorites</Link>
-        <UserButton />
-      </SignedIn>
+      {showUserLinks ? (
+        <>
+          <Link href="/favorites">Favorites</Link>
+          <UserButton />
+        </>
+      ) : null}
 
       <Link href="/recipes?focus=true" className="mt-1  text-xl">
         <FaMagnifyingGlass />
@@ -137,6 +145,10 @@ interface PopUpDivProps {
 
 function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const { isLoaded, userId } = useAuth();
+  const showGuestLinks = !isLoaded || !userId;
+  const showUserLinks = isLoaded && !!userId;
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -156,7 +168,7 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
   return (
     <div
       ref={wrapperRef}
-      className={`absolute right-0 w-64 h-80 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl
+      className={`absolute right-0 w-64 bg-green-400 flex justify-center items-center ml-auto rounded-bl-2xl py-8
        transition-all ease-in-out duration-300 md:hidden ${
          isVisible
            ? "translate-x-0 opacity-100"
@@ -164,18 +176,27 @@ function PopUpDiv({ isVisible, setIsVisible }: PopUpDivProps) {
        }`}
     >
       <ul className="flex flex-col space-y-8 items-center">
-        <Link href="/sign-in" onClick={() => setIsVisible(false)}>
-          Sign In
-        </Link>
+        {showGuestLinks ? (
+          <>
+            <Link href="/sign-up" onClick={() => setIsVisible(false)}>
+              Sign Up
+            </Link>
+            <Link href="/sign-in" onClick={() => setIsVisible(false)}>
+              Sign In
+            </Link>
+          </>
+        ) : null}
         <Link href="/" onClick={() => setIsVisible(false)}>
           Home
         </Link>
         <Link href="/recipes" onClick={() => setIsVisible(false)}>
           Browse
         </Link>
-        <Link href="/favorites" onClick={() => setIsVisible(false)}>
-          Favorites
-        </Link>
+        {showUserLinks ? (
+          <Link href="/favorites" onClick={() => setIsVisible(false)}>
+            Favorites
+          </Link>
+        ) : null}
         <Link
           href="/recipes?focus=true"
           onClick={() => setIsVisible(false)}

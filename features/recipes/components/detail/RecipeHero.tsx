@@ -14,6 +14,7 @@ interface RecipeHeroProps {
 
 const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
   const [heartClicked, setHeartClicked] = useState(isFavorited);
+  const [isPending, setIsPending] = useState(false);
   const { userId, isLoaded } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,10 +27,21 @@ const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
       return;
     }
 
+    if (isPending) return;
+
+    const nextFavoriteState = !heartClicked;
+    setIsPending(true);
+    setHeartClicked(nextFavoriteState);
+
     const result = await toggleFavorite(recipe.id.toString());
-    if (!result.ok) return;
+    if (!result.ok) {
+      setHeartClicked(heartClicked);
+      setIsPending(false);
+      return;
+    }
 
     setHeartClicked(result.isFavorited);
+    setIsPending(false);
     router.refresh();
   };
 
@@ -53,7 +65,7 @@ const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
 
         <button
           onClick={handleHeartClick}
-          className="absolute top-6 right-6 bg-white/20 p-3 rounded-full backdrop-blur-md hover:bg-white/40 transition-colors"
+          className={`absolute top-6 right-6 bg-white/20 p-3 rounded-full backdrop-blur-md hover:bg-white/40 transition-colors ${isPending ? "opacity-70" : ""}`}
         >
           <Heart
             className={`size-8 transition-colors ${

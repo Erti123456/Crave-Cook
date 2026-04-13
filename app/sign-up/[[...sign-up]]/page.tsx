@@ -2,7 +2,7 @@ import { SignUp } from "@clerk/nextjs";
 
 const Page = () => {
   return (
-    <div 
+    <div
       className="min-h-[calc(100vh-18rem)] flex items-center justify-center bg-cover bg-center px-4 py-32"
       style={{ backgroundImage: "url('/high-quality-food.jpg')" }}
     >
