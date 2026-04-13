@@ -16,6 +16,7 @@ interface MealCardProps {
 const MealCard = ({ recipe, isFavorited }: MealCardProps) => {
   const [heartClicked, setHeartClicked] = useState(isFavorited);
   const [isPending, setIsPending] = useState(false);
+  const [favoriteError, setFavoriteError] = useState("");
   const { userId, isLoaded } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -34,12 +35,14 @@ const MealCard = ({ recipe, isFavorited }: MealCardProps) => {
 
     const nextFavoriteState = !heartClicked;
     setIsPending(true);
+    setFavoriteError("");
     setHeartClicked(nextFavoriteState);
 
     const result = await toggleFavorite(recipe.id.toString());
     if (!result.ok) {
       setHeartClicked(heartClicked);
       setIsPending(false);
+      setFavoriteError(result.error);
       return;
     }
 
@@ -75,6 +78,11 @@ const MealCard = ({ recipe, isFavorited }: MealCardProps) => {
           onClick={handleHeartClick}
           className={`absolute bottom-2 right-2 cursor-pointer size-6 ${isPending ? "opacity-70" : ""} ${heartClicked ? "text-red-600" : "text-gray-400"}`}
         />
+        {favoriteError ? (
+          <p className="absolute left-3 right-3 bottom-9 rounded-lg bg-red-50 px-2 py-1 text-center text-[10px] font-semibold text-red-600 shadow">
+            {favoriteError}
+          </p>
+        ) : null}
       </Link>
     </>
   );

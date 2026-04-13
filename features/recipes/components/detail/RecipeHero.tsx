@@ -15,6 +15,7 @@ interface RecipeHeroProps {
 const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
   const [heartClicked, setHeartClicked] = useState(isFavorited);
   const [isPending, setIsPending] = useState(false);
+  const [favoriteError, setFavoriteError] = useState("");
   const { userId, isLoaded } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,12 +32,14 @@ const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
 
     const nextFavoriteState = !heartClicked;
     setIsPending(true);
+    setFavoriteError("");
     setHeartClicked(nextFavoriteState);
 
     const result = await toggleFavorite(recipe.id.toString());
     if (!result.ok) {
       setHeartClicked(heartClicked);
       setIsPending(false);
+      setFavoriteError(result.error);
       return;
     }
 
@@ -73,6 +76,11 @@ const RecipeHero = ({ recipe, isFavorited }: RecipeHeroProps) => {
             }`}
           />
         </button>
+        {favoriteError ? (
+          <p className="absolute top-24 right-6 max-w-64 rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 shadow">
+            {favoriteError}
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-8 flex flex-col items-center text-center">

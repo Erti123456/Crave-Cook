@@ -11,9 +11,13 @@ const toggleFavorite = async (
   recipeId: string,
 ): Promise<ToggleFavoriteResult> => {
   try {
+    if (!process.env.DATABASE_URL) {
+      return { ok: false, error: "DATABASE_URL is not configured" };
+    }
+
     const { userId } = await auth();
     if (!userId) {
-      return { ok: false, error: "Unauthorized" };
+      return { ok: false, error: "You must be signed in to favorite recipes" };
     }
 
     const alreadyFavorited = await prisma.favorite.findUnique({
@@ -45,7 +49,7 @@ const toggleFavorite = async (
     return { ok: true, isFavorited: !alreadyFavorited };
   } catch (err) {
     console.error("Failed to toggle favorite", err);
-    return { ok: false, error: "Failed to update favorite" };
+    return { ok: false, error: "Failed to update favorite. Check Vercel logs." };
   }
 };
 
